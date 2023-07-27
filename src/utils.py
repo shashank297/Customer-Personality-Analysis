@@ -90,12 +90,12 @@ class DatabaseManager:
         except Exception as e:
             print(f"There is an error in query: {e}")
 
-# Example usage:
-db_manager = DatabaseManager()
-table='marketing_campaign'
-df = pd.read_csv(r'C:\Python_project\Customer-Personality-Analysis\Notebook\Data\marketing_campaign.csv')
-df.drop('Unnamed: 0',axis=1,inplace=True)
-db_manager.create_table(df,table_name=table)
-db_manager.execute_values(df, table)  # Insert DataFrame into the database
-result_df = db_manager.execute_query('drop table marketing_campaign',commit=True) # Fetch data from the database
+# # Example usage:
+# db_manager = DatabaseManager()
+# table='marketing_campaign'
+# df = pd.read_csv(r'C:\Python_project\Customer-Personality-Analysis\Notebook\Data\marketing_campaign.csv')
+# df.drop('Unnamed: 0',axis=1,inplace=True)
+# db_manager.create_table(df,table_name=table)
+# db_manager.execute_values(df, table)  # Insert DataFrame into the database
+# result_df = db_manager.execute_query('drop table marketing_campaign',commit=True) # Fetch data from the database
 
