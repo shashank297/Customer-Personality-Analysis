@@ -1,5 +1,3 @@
-import sys
-sys.path.append(r'c:\Python_project\Customer-Personality-Analysis')
 import os
 import sys
 from src.exception import CustomException
@@ -10,8 +8,6 @@ from dataclasses import dataclass
 
 @dataclass
 class DataIngetionconfig:
-    train_data_path:str=os.path.join('artifacts','train.csv')
-    test_data_path:str=os.path.join('artifact','test.csv')
     raw_data_path:str=os.path.join('artifact','raw.csv')
 
 class DataIngetion:
