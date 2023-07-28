@@ -50,28 +50,41 @@ class DatabaseManager:
             print("Error: %s" % error)
             self.conn.rollback()
 
-        def execute_query(self, query, commit=False, fetch=False):
-            cur = self.conn.cursor()
-            try:
-                cur.execute(query)
+    def execute_query(self, query, commit=False, fetch=False):
+        cur = self.conn.cursor()
+        try:
+            cur.execute(query)
 
-                if fetch:
-                    try:
-                        records = cur.fetchall()
-                        columns = [desc[0] for desc in cur.description]
-                        df = pd.DataFrame(records, columns=columns)
-                        return df
-                    except Exception as e:
-                        print(f'Done fetchall without col: Error: {e}')
+            if fetch:
+                try:
+                    records = cur.fetchall()
+                    columns = [desc[0] for desc in cur.description]
+                    df = pd.DataFrame(records, columns=columns)
+                    return df
+                except Exception as e:
+                    print(f'Done fetchall without col: Error: {e}')
 
-                if commit:
-                    try:
-                        self.conn.commit()
-                        print('Done commit')
-                    except Exception as e:
-                        print(f'There is an error in commit: {e}')
-            except Exception as e:
-                print(f"There is an error in query: {e}")
+            if commit:
+                try:
+                    self.conn.commit()
+                    print('Done commit')
+                except Exception as e:
+                    print(f'There is an error in commit: {e}')
+        except Exception as e:
+            print(f"There is an error in query: {e}")
+
+
+def save_object(file_path, obj):
+    try:
+        dir_path = os.path.dirname(file_path)
+
+        os.makedirs(dir_path, exist_ok=True)
+
+        with open(file_path, "wb") as file_obj:
+            pickle.dump(obj, file_obj)
+
+    except Exception as e:
+        raise CustomException(e, sys)
 
 # # Example usage:
 # db_manager = DatabaseManager()

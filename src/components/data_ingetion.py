@@ -47,6 +47,6 @@ class DataIngestion:
             raise CustomException(e, sys)
 
 
-# Create an instance of the DataIngestion class and call the method
-data_ingestion = DataIngestion()
-data_ingestion.initiate_data_ingestion()
+# # Create an instance of the DataIngestion class and call the method
+# data_ingestion = DataIngestion()
+# data_ingestion.initiate_data_ingestion()

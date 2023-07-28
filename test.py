@@ -1,6 +1,6 @@
-import os
+from src.utils import DatabaseManager
 
-folder_path = os.path.join('Notebook', 'Data')
-file_names = os.listdir(folder_path)[0].split('.')[0]
+db=DatabaseManager()
 
-print(f':- {folder_path}----------{file_names}')
+df=db.execute_query('Select * from marketing_campaign',fetch=True)
+print(df.head())
