@@ -8,23 +8,6 @@ class DatabaseManager:
     def __init__(self):
         self.conn = dataBase.conn
 
-    def fetch_columns(self, table_name):
-        cur = self.conn.cursor()
-        try:
-            cur.execute(
-                '''
-                SELECT column_name
-                FROM information_schema.columns
-                WHERE table_schema = 'public' AND table_name = %s;
-                ''',
-                (table_name,)
-            )
-            records = cur.fetchall()
-            return [column[0] for column in records]
-        except Exception as e:
-            print(f'There is an error in fetch_columns: {e}')
-            return []
-
     def create_table(self, df, table_name):
         cur = self.conn.cursor()
         columns = df.columns
@@ -67,28 +50,28 @@ class DatabaseManager:
             print("Error: %s" % error)
             self.conn.rollback()
 
-    def execute_query(self, query, commit=False, fetch=False, table_name=''):
-        cur = self.conn.cursor()
-        try:
-            cur.execute(query)
+        def execute_query(self, query, commit=False, fetch=False):
+            cur = self.conn.cursor()
+            try:
+                cur.execute(query)
 
-            if fetch:
-                try:
-                    records = cur.fetchall()
-                    columns = self.fetch_columns(table_name) if table_name else []
-                    df = pd.DataFrame(records, columns=columns)
-                    return df
-                except Exception as e:
-                    print(f'Done fetchall without col: Error: {e}')
+                if fetch:
+                    try:
+                        records = cur.fetchall()
+                        columns = [desc[0] for desc in cur.description]
+                        df = pd.DataFrame(records, columns=columns)
+                        return df
+                    except Exception as e:
+                        print(f'Done fetchall without col: Error: {e}')
 
-            if commit:
-                try:
-                    self.conn.commit()
-                    print('Done commit')
-                except Exception as e:
-                    print(f'There is an error in commit: {e}')
-        except Exception as e:
-            print(f"There is an error in query: {e}")
+                if commit:
+                    try:
+                        self.conn.commit()
+                        print('Done commit')
+                    except Exception as e:
+                        print(f'There is an error in commit: {e}')
+            except Exception as e:
+                print(f"There is an error in query: {e}")
 
 # # Example usage:
 # db_manager = DatabaseManager()
