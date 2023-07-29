@@ -17,7 +17,7 @@ class DataTransformationConfig:
 
     def process_data_and_reduce_dimensionality(self, df):  
         # Process customer data
-        df.dropna(inplace=True)
+        # df.dropna(inplace=True)
         df['dt_customer'] = pd.to_datetime(df['dt_customer']) #dt_customer
         newest_customer_date = df['dt_customer'].max()
         oldest_customer_date = df['dt_customer'].min()
@@ -86,23 +86,23 @@ class DataTransformationConfig:
 
         return filename1, filename2
 
-# Step 1: Create an instance of the DataTransformationConfig class
-data_transformer = DataTransformationConfig()
+# # Step 1: Create an instance of the DataTransformationConfig class
+# data_transformer = DataTransformationConfig()
 
-# Step 2: Load your data into a pandas DataFrame
-# Assuming you have your data in a CSV file named 'customer_data.csv'
-db=DatabaseManager()
-customer_data = db.execute_query('select * from marketing_campaign',fetch=True)
+# # Step 2: Load your data into a pandas DataFrame
+# # Assuming you have your data in a CSV file named 'customer_data.csv'
+# db=DatabaseManager()
+# customer_data = db.execute_query('select * from marketing_campaign',fetch=True)
 
-# Step 3: Call the process_data_and_reduce_dimensionality method and pass the DataFrame
-filename1, filename2 = data_transformer.process_data_and_reduce_dimensionality(customer_data)
+# # Step 3: Call the process_data_and_reduce_dimensionality method and pass the DataFrame
+# filename1, filename2 = data_transformer.process_data_and_reduce_dimensionality(customer_data)
 
-df1=db.execute_query(f'select * from {filename1}',fetch=True)
-df2=db.execute_query(f'select * from {filename2}',fetch=True)
+# df1=db.execute_query(f'select * from {filename1}',fetch=True)
+# df2=db.execute_query(f'select * from {filename2}',fetch=True)
 
-logging.info(f'file names is : {filename1},{filename2}')
-logging.info(f'df1: {df1.head()}')
-logging.info(f'df2: {df2.head()}')
+# logging.info(f'file names is : {filename1},{filename2}')
+# logging.info(f'df1: {df1.head()}')
+# logging.info(f'df2: {df2.head()}')
 
 
 # Step 4: The method will process the data and upload it to the database

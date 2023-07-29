@@ -28,10 +28,6 @@ class DataTransformation:
                               'NumWebVisitsMonth', 'AcceptedCmp3', 'AcceptedCmp4', 'AcceptedCmp5', 'AcceptedCmp1',
                               'AcceptedCmp2', 'Complain', 'Z_CostContact', 'Z_Revenue', 'Response']
 
-            # # Define the custom ranking for each ordinal variable
-            # cut_categories = ['Fair', 'Good', 'Very Good', 'Premium', 'Ideal']
-            # color_categories = ['D', 'E', 'F', 'G', 'H', 'I', 'J']
-            # clarity_categories = ['I1', 'SI2', 'SI1', 'VS2', 'VS1', 'VVS2', 'VVS1', 'IF']
 
             logging.info('Pipeline Initiated')
 
@@ -47,7 +43,7 @@ class DataTransformation:
             cat_pipeline = Pipeline(
                 steps=[
                     ('imputer', SimpleImputer(strategy='most_frequent')),
-                    ('ordinalencoder', OrdinalEncoder(categories=[cut_categories, color_categories, clarity_categories])),
+                    ('ordinalencoder',LabelEncoder()),
                     ('scaler', StandardScaler())
                 ]
             )
