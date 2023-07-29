@@ -11,7 +11,7 @@ from src.utils import DatabaseManager
 
 @dataclass
 class DataIngestionconfig:
-    conn = dataBase
+    conn = dataBase.conn
     folder_path = os.path.join('Notebook', 'Data')
     file_names = os.listdir(folder_path)[0].split('.')[0]
 
@@ -45,8 +45,6 @@ class DataIngestion:
         except Exception as e:
             logging.info('Exception occurred at Data Ingestion stage')
             raise CustomException(e, sys)
+        return self.ingestion_config.file_names
 
 
-# # Create an instance of the DataIngestion class and call the method
-# data_ingestion = DataIngestion()
-# data_ingestion.initiate_data_ingestion()

@@ -1,113 +1,111 @@
 import pandas as pd
 import numpy as np
+from src.exception import CustomException
+import os
+from src.logger import logging
+import sys
+from datetime import datetime
+from src.utils import DatabaseManager
+from src.components.variable import dataBase
 from sklearn.preprocessing import LabelEncoder, StandardScaler
 from sklearn.decomposition import PCA
-from sklearn.cluster import AgglomerativeClustering
 
-from datetime import datetime
+class DataTransformationConfig:
+    def __init__(self):
+        self.DatabaseManager = DatabaseManager()
+        self.conn = dataBase.conn
 
-class CustomerAnalysis:
-    def __init__(self, df):
-        self.df = df
-    
-    def process_customer_data(self):
-        self.df.dropna(inplace=True)
-        # Convert 'Dt_Customer' column to datetime
-        self.df['Dt_Customer'] = pd.to_datetime(self.df['Dt_Customer'])
+    def process_data_and_reduce_dimensionality(self, df):  
+        # Process customer data
+        df.dropna(inplace=True)
+        df['dt_customer'] = pd.to_datetime(df['dt_customer']) #dt_customer
+        newest_customer_date = df['dt_customer'].max()
+        oldest_customer_date = df['dt_customer'].min()
+        df['Customer_For'] = (newest_customer_date - df['dt_customer']).dt.days
 
-        # Calculate the newest and oldest recorded customer dates
-        newest_customer_date = self.df['Dt_Customer'].max()
-        oldest_customer_date = self.df['Dt_Customer'].min()
-
-        # Create a new feature 'Customer_For' indicating the number of days since customer registration relative to the newest customer
-        self.df['Customer_For'] = (newest_customer_date - self.df['Dt_Customer']).dt.days
-
-        # Calculate the customer's age as of today (using dynamic current year)
         current_year = datetime.now().year
-        self.df['Age'] = current_year - self.df['Year_Birth']
-
-        # Calculate total spendings on various items
-        self.df['Spent'] = self.df[['MntWines', 'MntFruits', 'MntMeatProducts', 'MntFishProducts', 'MntSweetProducts', 'MntGoldProds']].sum(axis=1)
-
-        # Derive living situation by marital status
-        self.df['Living_With'] = self.df['Marital_Status'].replace({"Married": "Partner", "Together": "Partner", "Absurd": "Alone", "Widow": "Alone", "YOLO": "Alone", "Divorced": "Alone", "Single": "Alone"})
-
-        # Create a feature indicating total children living in the household
-        self.df['Children'] = self.df['Kidhome'] + self.df['Teenhome']
-
-        # Create a feature for total members in the household
-        self.df['Family_Size'] = self.df['Living_With'].replace({"Alone": 1, "Partner": 2})
-
-        # Create a feature indicating parenthood
-        self.df['Is_Parent'] = np.where(self.df['Children'] > 0, 1, 0)
-
-        # Segment education levels into three groups
-        self.df['Education'] = self.df['Education'].replace({"Basic": "Undergraduate", "2n Cycle": "Undergraduate", "Graduation": "Graduate", "Master": "Postgraduate", "PhD": "Postgraduate"})
-
-        # Convert 'Customer_For' column to numeric
-        self.df['Customer_For'] = pd.to_numeric(self.df['Customer_For'], errors="coerce")
-
-        # Rename the column names for better understanding
-        self.df.rename(columns={
-            "MntWines": "Wines",
-            "MntFruits": "Fruits",
-            "MntMeatProducts": "Meat",
-            "MntFishProducts": "Fish",
-            "MntSweetProducts": "Sweets",
-            "MntGoldProds": "Gold"
+        df['Age'] = current_year - df['year_birth']
+        df['Spent'] = df[['mntwines', 'mntfruits', 'mntmeatproducts', 'mntfishproducts', 'mntsweetproducts', 'mntgoldprods']].sum(axis=1)
+        df['living_with'] = df['marital_status'].replace({"Married": "Partner", "Together": "Partner", "Absurd": "Alone", "Widow": "Alone", "YOLO": "Alone", "Divorced": "Alone", "Single": "Alone"})
+        df['children'] = df['kidhome'] + df['teenhome']
+        df['Family_Size'] = df['living_with'].replace({"Alone": 1, "Partner": 2})
+        df['Is_Parent'] = np.where(df['children'] > 0, 1, 0)
+        df['education'] = df['education'].replace({"Basic": "Undergraduate", "2n Cycle": "Undergraduate", "Graduation": "Graduate", "Master": "Postgraduate", "PhD": "Postgraduate"})
+        df['Customer_For'] = pd.to_numeric(df['Customer_For'], errors="coerce")
+        df.rename(columns={
+            "mntwines": "Wines",
+            "mntfruits": "Fruits",
+            "mntmeatproducts": "Meat",
+            "mntfishproducts": "Fish",
+            "mntsweetproducts": "Sweets",
+            "mntgoldprods": "Gold"
         }, inplace=True)
 
-        # Drop some of the redundant features
-        to_drop = ["Marital_Status", "Dt_Customer", "Z_CostContact", "Z_Revenue", "Year_Birth", "ID"]
-        self.df.drop(to_drop, axis=1, inplace=True)
+        to_drop = ["marital_status", "dt_customer", "z_costcontact", "z_revenue", "year_birth", "id"]
+        df.drop(to_drop, axis=1, inplace=True)
 
-        data = self.df.select_dtypes(include=[np.number])
+        data = df.select_dtypes(include=[np.number])
 
-        return self.df, data
-    
-    def preprocess_and_reduce_dimensionality(self):
-        # Get list of categorical variables
-        s = (self.df.dtypes == 'object')
+        # Reduce dimensionality using PCA
+        s = (df.dtypes == 'object')
         object_cols = list(s[s].index)
-
-        # Label Encoding the object dtypes.
         LE = LabelEncoder()
-        for i in object_cols:
-            self.df[i] = LE.fit_transform(self.df[i])
+        for col in object_cols:
+            df[col] = LE.fit_transform(df[col])
 
-        # Creating a copy of data
-        ds = self.df.copy()
-
-        # Create a subset of the DataFrame by dropping the features on deals accepted and promotions
-        cols_del = ['AcceptedCmp3', 'AcceptedCmp4', 'AcceptedCmp5', 'AcceptedCmp1', 'AcceptedCmp2', 'Complain', 'Response']
+        ds = df.copy()
+        cols_del = ['acceptedcmp3', 'acceptedcmp4', 'acceptedcmp5', 'acceptedcmp1', 'acceptedcmp2', 'complain', 'response']
         ds = ds.drop(cols_del, axis=1)
 
-        # Scaling the data using StandardScaler
         scaler = StandardScaler()
         scaler.fit(ds)
         scaled_ds = pd.DataFrame(scaler.transform(ds), columns=ds.columns)
 
-        # Initiating PCA to reduce dimensions (features) to 3
         pca = PCA(n_components=3)
         pca.fit(scaled_ds)
         PCA_ds = pd.DataFrame(pca.transform(scaled_ds), columns=["PCA1", "PCA2", "PCA3"])
-        self.reduced_data=PCA_ds
-        return PCA_ds
 
-    def perform_clustering(self, num_clusters=4):
-        # Initiating the Agglomerative Clustering model 
-        AC = AgglomerativeClustering(n_clusters=num_clusters)
+        filename1 = 'CleanData'
+        filename2 = 'PCAdata'
 
-        # Fit model and predict clusters
-        yhat_AC = AC.fit_predict(self.reduced_data)
-        self.df["Clusters"] = yhat_AC
-        return self.df
+        try:
+            self.DatabaseManager.create_table(data, filename1)
+            logging.info(f'Successfully created table in the database table name: {filename1}')
 
-# Sample usage:
-# Assuming 'data_file' is the path to the CSV file containing customer data
-# df=pd.read_csv(r'C:\Python_project\Customer-Personality-Analysis\Notebook\Data\marketing_campaign.csv')
-# customer_analysis = CustomerAnalysis(df=df)
-# customer_analysis.process_customer_data()
-# reduced_data = customer_analysis.preprocess_and_reduce_dimensionality()
-# customer_analysis.perform_clustering(num_clusters=4)
+            self.DatabaseManager.create_table(PCA_ds, filename2)
+            logging.info(f'Successfully created table in the database table name: {filename2}')
+
+            self.DatabaseManager.execute_values(data, filename1)
+            logging.info('DataFrame data values have been successfully uploaded to the database table')
+
+            self.DatabaseManager.execute_values(PCA_ds, filename2)
+            logging.info('DataFrame data values have been successfully uploaded to the database table')
+        except Exception as e:
+            logging.info('Exception occurred at data_process.py file during creating table/execute_value')
+            raise CustomException(e, sys)
+
+        return filename1, filename2
+
+# Step 1: Create an instance of the DataTransformationConfig class
+data_transformer = DataTransformationConfig()
+
+# Step 2: Load your data into a pandas DataFrame
+# Assuming you have your data in a CSV file named 'customer_data.csv'
+db=DatabaseManager()
+customer_data = db.execute_query('select * from marketing_campaign',fetch=True)
+
+# Step 3: Call the process_data_and_reduce_dimensionality method and pass the DataFrame
+filename1, filename2 = data_transformer.process_data_and_reduce_dimensionality(customer_data)
+
+df1=db.execute_query(f'select * from {filename1}',fetch=True)
+df2=db.execute_query(f'select * from {filename2}',fetch=True)
+
+logging.info(f'file names is : {filename1},{filename2}')
+logging.info(f'df1: {df1.head()}')
+logging.info(f'df2: {df2.head()}')
+
+
+# Step 4: The method will process the data and upload it to the database
+# You can now use 'processed_data' and 'reduced_data' for further analysis or other tasks.
+# The data has been transformed and reduced using PCA.
 

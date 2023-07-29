@@ -30,8 +30,11 @@ class DatabaseManager:
             return 'REAL'
         elif dtype == 'bool':
             return 'BOOLEAN'
+        elif dtype == '<M8[ns]': 
+            return 'TIMESTAMP'
         else:
-            return 'TEXT'
+            return 'TEXT' 
+
 
     def execute_values(self, df, table_name):
         cur = self.conn.cursor()
