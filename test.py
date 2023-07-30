@@ -49,7 +49,7 @@ class DataTransformation:
                 steps=[
                     ('imputer', SimpleImputer(strategy='median')),
                     ('scaler', StandardScaler()),
-                    ('pca', PCA(n_components=5))  # Add PCA as a step with the desired number of components
+                    ('pca', PCA(n_components=3))  # Add PCA as a step with the desired number of components
                 ]
             )
 
