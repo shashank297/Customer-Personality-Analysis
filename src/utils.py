@@ -1,7 +1,11 @@
 import psycopg2
 import pandas as pd
+import os
+import sys
 import psycopg2.extras as extras
 from src.components.variable import dataBase
+from src.exception import CustomException
+import pickle
 
 class DatabaseManager:
     def __init__(self):
@@ -95,6 +99,14 @@ def save_object(file_path, obj):
 
     except Exception as e:
         raise CustomException(e, sys)
+
+def load_object(file_path):
+    try:
+        with open(file_path,'rb') as file_obj:
+            return pickle.load(file_obj)
+    except Exception as e:
+        logging.info('Exception Occured in load_object function utils')
+        raise CustomException(e,sys)
 
 # # Example usage:
 # db_manager = DatabaseManager()
