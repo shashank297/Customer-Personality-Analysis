@@ -34,26 +34,18 @@ class DataTransformation:
 
             logging.info('Pipeline Initiated')
 
-            # Numerical Pipeline
-            num_pipeline = Pipeline(
+            # Single Pipeline for both numerical and categorical features
+            data_pipeline = Pipeline(
                 steps=[
-                    ('imputer', SimpleImputer(strategy='median')),
-                    ('scaler', StandardScaler()),
-                    ('pca', PCA(n_components=3))
-                ]
-            )
-
-            # Categorical Pipeline
-            cat_pipeline = Pipeline(
-                steps=[
-                    ('imputer', SimpleImputer(strategy='most_frequent')),
-                    ('scaler', StandardScaler())
+                    ('imputer_num', SimpleImputer(strategy='median')),  # Imputer for numerical columns
+                    ('imputer_cat', SimpleImputer(strategy='most_frequent')),  # Imputer for categorical columns
+                    ('scaler', StandardScaler()),  # StandardScaler for both types of columns
+                    ('pca', PCA(n_components=3))  # PCA for numerical columns
                 ]
             )
 
             preprocessor = ColumnTransformer([
-                ('num_pipeline', num_pipeline, numerical_cols),
-                ('cat_pipeline', cat_pipeline, categorical_cols)
+                ('data_pipeline', data_pipeline, numerical_cols + categorical_cols)  # Combine all columns
             ])
 
             logging.info('Pipeline Completed')
@@ -90,6 +82,9 @@ class DataTransformation:
 
             # train_arr = np.c_[input_feature_train_arr, np.array(input_feature_train_arr)]
             train_arr = input_feature_train_arr
+            logging.info(train_arr)
+            # self.db.create_table(train_arr,'pca')
+            # self.db.execute_values(train_arr,'pca')
 
             save_object(
                 file_path=self.data_transformation_config.preprocessor_obj_file_path,
