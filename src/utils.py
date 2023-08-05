@@ -45,12 +45,12 @@ class DatabaseManager:
                 table_exists = cur.fetchone()[0]
                 if not table_exists:
                     self.create_table(df, table_name)
-                tuples = [tuple(row) for _, row in df.iterrows()]
-                cols = ','.join(df.columns)
-                query = "INSERT INTO %s(%s) VALUES %%s" % (table_name, cols)
-                psycopg2.extras.execute_values(cur, query, tuples)
-                self.conn.commit()
-                print("The DataFrame is inserted")
+                    tuples = [tuple(row) for _, row in df.iterrows()]
+                    cols = ','.join(df.columns)
+                    query = "INSERT INTO %s(%s) VALUES %%s" % (table_name, cols)
+                    psycopg2.extras.execute_values(cur, query, tuples)
+                    self.conn.commit()
+                    print("The DataFrame is inserted")
             except (Exception, psycopg2.DatabaseError) as error:
                 print("Error: %s" % error)
                 self.conn.rollback()
@@ -108,12 +108,5 @@ def load_object(file_path):
         logging.info('Exception Occured in load_object function utils')
         raise CustomException(e,sys)
 
-# # Example usage:
-# db_manager = DatabaseManager()
-# table='marketing_campaign'
-# df = pd.read_csv(r'C:\Python_project\Customer-Personality-Analysis\Notebook\Data\marketing_campaign.csv')
-# df.drop('Unnamed: 0',axis=1,inplace=True)
-# db_manager.create_table(df,table_name=table)
-# db_manager.execute_values(df, table)  # Insert DataFrame into the database
-# result_df = db_manager.execute_query('drop table marketing_campaign',commit=True) # Fetch data from the database
+
 
