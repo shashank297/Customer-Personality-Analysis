@@ -1,7 +1,7 @@
-# Basic Import
+# Basic Imports
 import numpy as np
 import pandas as pd
-from sklearn.cluster import AgglomerativeClustering
+from sklearn.cluster import KMeans
 from src.exception import CustomException
 from src.logger import logging
 from src.utils import DatabaseManager
@@ -13,43 +13,51 @@ import os
 
 @dataclass 
 class ModelTrainerConfig:
-    trained_model_file_path:str = os.path.join('artifacts','model.pkl')
+    trained_model_file_path: str = os.path.join('artifacts', 'model.pkl')
 
 class ModelTrainer:
 
     def __init__(self):
         self.model_trainer_config = ModelTrainerConfig()
-        self.db=DatabaseManager()
-        self.conn=dataBase.conn
+        self.db = DatabaseManager()
+        self.conn = dataBase.conn
 
-    def initiate_model_training(self,train_array,tablename):
+    def initiate_model_training(self, train_array, tablename):
 
         try:
-            logging.info('Initate model traning')
+            logging.info('Initiating model training')
 
-            AC = AgglomerativeClustering(n_clusters=4)
-            yhat_AC = AC.fit_predict(train_array)
+            # Use K-Means clustering with 4 clusters
+            kmeans = KMeans(n_clusters=4)
+            yhat_kmeans = kmeans.fit_predict(train_array)
 
             logging.info('Model is trained successfully')
             save_object(
                 file_path=self.model_trainer_config.trained_model_file_path,
-                obj=AC
+                obj=kmeans
             )
 
-            logging.info('Modeal.pkl file as been save')
+            logging.info('Model.pkl file has been saved')
 
-            df=self.db.execute_query(f'select * from {tablename}',fetch=True)
-            df["Clusters"]=yhat_AC
+            df = self.db.execute_query(f'select * from {tablename}', fetch=True)
+            df["Clusters"] = yhat_kmeans
 
-            merge_table='merge_table'
-            logging.info(f'Initiateing table Uploding to the database as a {merge_table}')
-            
-            self.db.create_table(df=df,table_name=merge_table)
-            self.db.execute_values(df,merge_table)
+            merge_table = 'merge_table'
+            logging.info(f'Initiating table uploading to the database as {merge_table}')
 
-            logging.info(f'table has been uploded to the database with table name {merge_table}')
-            
+            self.db.create_table(df=df, table_name=merge_table)
+            self.db.execute_values(df, merge_table)
+
+            logging.info(f'Table has been uploaded to the database with table name {merge_table}')
 
         except Exception as e:
-            logging.info('Exception occured at Model Training')
-            raise CustomException(e,sys)
+            logging.info('Exception occurred at Model Training')
+            raise CustomException(e, sys)
+
+# # Usage
+# if __name__ == "__main__":
+#     # Sample usage of ModelTrainer
+#     trainer = ModelTrainer()
+#     train_data = np.random.rand(100, 10)  # Example training data
+#     table_name = "data_table"  # Example table name
+#     trainer.initiate_model_training(train_data, table_name)

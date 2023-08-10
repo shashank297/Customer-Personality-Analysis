@@ -5,12 +5,6 @@ from src.logger import logging
 from src.utils import load_object
 import pandas as pd
 
-import os
-import sys
-from src.exception import CustomException
-from src.logger import logging
-from src.utils import load_object
-
 class PredictPipeline:
 
     def __init__(self):
@@ -29,7 +23,7 @@ class PredictPipeline:
             data_scaled = preprocessor.transform(features)
 
             # Predict cluster assignments using the agglomerative_clustering_model
-            cluster_assignments = agglomerative_clustering_model.fit_predict(data_scaled)
+            cluster_assignments = agglomerative_clustering_model.predict(data_scaled)
 
         except Exception as e:
             logging.info("Exception occurred in clustering prediction")
