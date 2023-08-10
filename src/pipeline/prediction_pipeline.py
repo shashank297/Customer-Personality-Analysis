@@ -5,28 +5,37 @@ from src.logger import logging
 from src.utils import load_object
 import pandas as pd
 
+import os
+import sys
+from src.exception import CustomException
+from src.logger import logging
+from src.utils import load_object
+
 class PredictPipeline:
 
     def __init__(self):
-        pass    
-    def predict(self,features):
+        pass
 
+    def predict_clusters(self, features):
         try:
-            preprocessor_path=os.path.join('artifacts','preprocessor.pkl')
-            model_path=os.path.join('artifacts','model.pkl')
+            # Load the preprocessor and AgglomerativeClustering model
+            preprocessor_path = os.path.join('artifacts', 'preprocessor.pkl')
+            model_path = os.path.join('artifacts', 'model.pkl')
 
-            preprocessor=load_object(preprocessor_path)
-            model=load_object(model_path)
+            preprocessor = load_object(preprocessor_path)
+            agglomerative_clustering_model = load_object(model_path)
 
-            data_scaled=preprocessor.transform(features)
-            pred=model.predict(data_scaled)
+            # Preprocess the features
+            data_scaled = preprocessor.transform(features)
+
+            # Predict cluster assignments using the agglomerative_clustering_model
+            cluster_assignments = agglomerative_clustering_model.fit_predict(data_scaled)
 
         except Exception as e:
+            logging.info("Exception occurred in clustering prediction")
+            raise CustomException(e, sys)
 
-            logging.info("Exception occured in prediction")
-            raise CustomException(e,sys)
-
-        return pred
+        return cluster_assignments
 
 
 import pandas as pd
@@ -101,36 +110,36 @@ class CustomData:
     def get_data_as_dataframe(self):
         try:
             custom_data_input_dict = {
-                'Education': [self.Education],
-                'Income': [self.Income],
-                'Kidhome': [self.Kidhome],
-                'Teenhome': [self.Teenhome],
-                'Recency': [self.Recency],
-                'MntWines': [self.MntWines],
-                'MntFruits': [self.MntFruits],
-                'MntMeatProducts': [self.MntMeatProducts],
-                'MntFishProducts': [self.MntFishProducts],
-                'MntSweetProducts': [self.MntSweetProducts],
-                'MntGoldProds': [self.MntGoldProds],
-                'NumDealsPurchases': [self.NumDealsPurchases],
-                'NumWebPurchases': [self.NumWebPurchases],
-                'NumCatalogPurchases': [self.NumCatalogPurchases],
-                'NumStorePurchases': [self.NumStorePurchases],
-                'NumWebVisitsMonth': [self.NumWebVisitsMonth],
-                'AcceptedCmp3': [self.AcceptedCmp3],
-                'AcceptedCmp4': [self.AcceptedCmp4],
-                'AcceptedCmp5': [self.AcceptedCmp5],
-                'AcceptedCmp1': [self.AcceptedCmp1],
-                'AcceptedCmp2': [self.AcceptedCmp2],
-                'Complain': [self.Complain],
-                'Response': [self.Response],
-                'Customer_for': [self.Customer_for],
-                'Age': [self.Age],
-                'Spent': [self.Spent],
-                'Living_with': [self.Living_with],
-                'Children': [self.Children],
-                'Family_size': [self.Family_size],
-                'Is_parent': [self.Is_parent]
+                'education': [self.Education],
+                'income': [self.Income],
+                'kidhome': [self.Kidhome],
+                'teenhome': [self.Teenhome],
+                'recency': [self.Recency],
+                'wines': [self.MntWines],
+                'fruits': [self.MntFruits],
+                'meat': [self.MntMeatProducts],
+                'fish': [self.MntFishProducts],
+                'sweets': [self.MntSweetProducts],
+                'gold': [self.MntGoldProds],
+                'numdealspurchases': [self.NumDealsPurchases],
+                'numwebpurchases': [self.NumWebPurchases],
+                'numcatalogpurchases': [self.NumCatalogPurchases],
+                'numstorepurchases': [self.NumStorePurchases],
+                'numwebvisitsmonth': [self.NumWebVisitsMonth],
+                'acceptedcmp3': [self.AcceptedCmp3],
+                'acceptedcmp4': [self.AcceptedCmp4],
+                'acceptedcmp5': [self.AcceptedCmp5],
+                'acceptedcmp1': [self.AcceptedCmp1],
+                'acceptedcmp2': [self.AcceptedCmp2],
+                'complain': [self.Complain],
+                'response': [self.Response],
+                'customer_for': [self.Customer_for],
+                'age': [self.Age],
+                'spent': [self.Spent],
+                'living_with': [self.Living_with],
+                'children': [self.Children],
+                'family_size': [self.Family_size],
+                'is_parent': [self.Is_parent]
             }
 
             df = pd.DataFrame(custom_data_input_dict)

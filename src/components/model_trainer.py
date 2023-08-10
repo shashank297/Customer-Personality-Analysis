@@ -33,7 +33,7 @@ class ModelTrainer:
             logging.info('Model is trained successfully')
             save_object(
                 file_path=self.model_trainer_config.trained_model_file_path,
-                obj=yhat_AC
+                obj=AC
             )
 
             logging.info('Modeal.pkl file as been save')
