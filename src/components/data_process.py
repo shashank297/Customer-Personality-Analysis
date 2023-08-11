@@ -76,8 +76,8 @@ class DataCleaning:
         filename1 = 'cleaned_data'
 
         try:
-            self.db.create_table(data, filename1)
-            logging.info(f'Successfully created table in the database table name: {filename1}')
+            # self.db.create_table(data, filename1)
+            # logging.info(f'Successfully created table in the database table name: {filename1}')
 
 
 

@@ -30,8 +30,8 @@ class DataIngestion:
 
             df.drop('Unnamed: 0',axis=1,inplace=True)
             try:
-                self.DatabaseManager.create_table(df, self.ingestion_config.file_names)
-                logging.info('Successfully created table in the database')
+                # self.DatabaseManager.create_table(df, self.ingestion_config.file_names)
+                # logging.info('Successfully created table in the database')
 
                 self.DatabaseManager.execute_values(df, self.ingestion_config.file_names)
                 logging.info('DataFrame values have been successfully uploaded to the database table')
@@ -48,6 +48,6 @@ class DataIngestion:
         return self.ingestion_config.file_names
 
 
-# D=DataIngestion()
+D=DataIngestion()
 
-# A=D.initiate_data_ingestion()
+A=D.initiate_data_ingestion()

@@ -45,7 +45,7 @@ class ModelTrainer:
             merge_table = 'merge_table'
             logging.info(f'Initiating table uploading to the database as {merge_table}')
 
-            self.db.create_table(df=df, table_name=merge_table)
+            # self.db.create_table(df=df, table_name=merge_table)
             self.db.execute_values(df, merge_table)
 
             logging.info(f'Table has been uploaded to the database with table name {merge_table}')

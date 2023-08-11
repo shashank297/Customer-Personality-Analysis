@@ -51,6 +51,8 @@ class DatabaseManager:
                     psycopg2.extras.execute_values(cur, query, tuples)
                     self.conn.commit()
                     print("The DataFrame is inserted")
+                else:
+                    print("Table is already exists in the database")
             except (Exception, psycopg2.DatabaseError) as error:
                 print("Error: %s" % error)
                 self.conn.rollback()
