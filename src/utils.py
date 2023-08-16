@@ -4,9 +4,10 @@ import os
 import sys
 import psycopg2.extras as extras
 from src.components.variable import dataBase
+from src.logger import logging
 from src.exception import CustomException
 import pickle
-
+logging.info('ss')
 class DatabaseManager:
     def __init__(self):
         self.conn = dataBase.conn
@@ -50,11 +51,11 @@ class DatabaseManager:
                     query = "INSERT INTO %s(%s) VALUES %%s" % (table_name, cols)
                     psycopg2.extras.execute_values(cur, query, tuples)
                     self.conn.commit()
-                    print("The DataFrame is inserted")
-                else:
-                    print("Table is already exists in the database")
+                    logging.info("The DataFrame is inserted")
+                # else:
+                    # logging.info("Table is already exists in the database")
             except (Exception, psycopg2.DatabaseError) as error:
-                print("Error: %s" % error)
+                logging.info("Error: %s" % error)
                 self.conn.rollback()
 
     def execute_query(self, query, commit=False, fetch=False):
@@ -69,24 +70,24 @@ class DatabaseManager:
                         df = pd.DataFrame(records, columns=columns)
                         return df
                     except Exception as e:
-                        print(f'Done fetchall without col: Error: {e}')
+                        logging.info(f'Done fetchall without col: Error: {e}')
 
                 if commit:
                     try:
                         self.conn.commit()
-                        print('Done commit')
+                        logging.info('Done commit')
                     except Exception as e:
-                        print(f'There is an error in commit: {e}')
+                        logging.info(f'There is an error in commit: {e}')
             except Exception as e:
-                print(f"There is an error in query: {e}")
+                logging.info(f"There is an error in query: {e}")
             finally:
                 self.conn.rollback()
     def rollback_transaction(self):
         try:
             self.conn.rollback()
-            print("Transaction rolled back successfully.")
+            logging.info("Transaction rolled back successfully.")
         except psycopg2.Error as e:
-            print("Error while rolling back the transaction:", e)
+            logging.info("Error while rolling back the transaction:", e)
 
 
 

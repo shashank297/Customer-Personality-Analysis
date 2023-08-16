@@ -20,3 +20,4 @@ sklearn==0.0.post7
 threadpoolctl==3.2.0
 tzdata==2023.3
 yellowbrick==1.5
+-e .

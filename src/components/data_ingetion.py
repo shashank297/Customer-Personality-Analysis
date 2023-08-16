@@ -48,6 +48,6 @@ class DataIngestion:
         return self.ingestion_config.file_names
 
 
-D=DataIngestion()
+# D=DataIngestion()
 
-A=D.initiate_data_ingestion()
+# A=D.initiate_data_ingestion()
