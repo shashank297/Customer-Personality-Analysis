@@ -1,119 +1,10 @@
 <html>
 <body>
 <form action="{{url_for('predict_datapoint')}}" method="POST">
-    <div class="form-group">
-        <label for="education">Education:</label>
-        <input type="text" id="education" name="education" placeholder="Enter education value">
-    </div>
 
     <div class="form-group">
         <label for="income">Income:</label>
         <input type="text" id="income" name="income" placeholder="Enter income value (float)">
-    </div>
-
-    <div class="form-group">  
-        <label for="kidhome">Kidhome:</label>
-        <input type="text" id="kidhome" name="kidhome" placeholder="Enter kidhome value (int)">
-    </div>
-    
-    <div class="form-group">
-        <label for="teenhome">Teenhome:</label>
-        <input type="text" id="teenhome" name="teenhome" placeholder="Enter teenhome value (int)">
-    </div>
-  
-    <div class="form-group">
-        <label for="recency">Recency:</label>
-        <input type="text" id="recency" name="recency" placeholder="Enter recency value (int)">
-    </div>
-  
-    <div class="form-group">
-        <label for="mntwines">MntWines:</label>
-        <input type="text" id="mntwines" name="mntwines" placeholder="Enter MntWines value (int)">
-    </div>
-  
-    <div class="form-group">
-        <label for="mntfruits">MntFruits:</label>
-        <input type="text" id="mntfruits" name="mntfruits" placeholder="Enter MntFruits value (int)">
-    </div>
-
-    <div class="form-group">
-        <label for="mntmeatproducts">MntMeatProducts:</label>
-        <input type="text" id="mntmeatproducts" name="mntmeatproducts" placeholder="Enter MntMeatProducts value (int)">
-    </div>
-
-    <div class="form-group">
-        <label for="mntfishproducts">MntFishProducts:</label>
-        <input type="text" id="mntfishproducts" name="mntfishproducts" placeholder="Enter MntFishProducts value (int)">
-    </div>
-
-    <div class="form-group">
-        <label for="mntsweetproducts">MntSweetProducts:</label>
-        <input type="text" id="mntsweetproducts" name="mntsweetproducts" placeholder="Enter MntSweetProducts value (int)">
-    </div>
-
-    <div class="form-group">
-        <label for="mntgoldprods">MntGoldProds:</label>
-        <input type="text" id="mntgoldprods" name="mntgoldprods" placeholder="Enter MntGoldProds value (int)">
-    </div>
-  
-    <div class="form-group">
-        <label for="numdealspurchases">NumDealsPurchases:</label>
-        <input type="text" id="numdealspurchases" name="numdealspurchases" placeholder="Enter NumDealsPurchases value (int)">
-    </div>
-  
-    <div class="form-group">
-        <label for="numwebpurchases">NumWebPurchases:</label>
-        <input type="text" id="numwebpurchases" name="numwebpurchases" placeholder="Enter NumWebPurchases value (int)">
-    </div>
-
-    <div class="form-group">
-        <label for="numcatalogpurchases">NumCatalogPurchases:</label>
-        <input type="text" id="numcatalogpurchases" name="numcatalogpurchases" placeholder="Enter NumCatalogPurchases value (int)">
-    </div>
-
-    <div class="form-group">
-        <label for="numstorepurchases">NumStorePurchases:</label>
-        <input type="text" id="numstorepurchases" name="numstorepurchases" placeholder="Enter NumStorePurchases value (int)">
-    </div>
-
-    <div class="form-group">
-        <label for="numwebvisitsmonth">NumWebVisitsMonth:</label>
-        <input type="text" id="numwebvisitsmonth" name="numwebvisitsmonth" placeholder="Enter NumWebVisitsMonth value (int)">
-    </div>
-
-    <div class="form-group">
-        <label for="acceptedcmp3">AcceptedCmp3:</label>
-        <input type="text" id="acceptedcmp3" name="acceptedcmp3" placeholder="Enter AcceptedCmp3 value (int)">
-    </div>
-
-    <div class="form-group">
-        <label for="acceptedcmp4">AcceptedCmp4:</label>
-        <input type="text" id="acceptedcmp4" name="acceptedcmp4" placeholder="Enter AcceptedCmp4 value (int)">
-    </div>
-
-    <div class="form-group">
-        <label for="acceptedcmp5">AcceptedCmp5:</label>
-        <input type="text" id="acceptedcmp5" name="acceptedcmp5" placeholder="Enter AcceptedCmp5 value (int)">
-    </div>
-
-    <div class="form-group">
-        <label for="acceptedcmp1">AcceptedCmp1:</label>
-        <input type="text" id="acceptedcmp1" name="acceptedcmp1" placeholder="Enter AcceptedCmp1 value (int)">
-    </div>
-
-    <div class="form-group">
-        <label for="acceptedcmp2">AcceptedCmp2:</label>
-        <input type="text" id="acceptedcmp2" name="acceptedcmp2" placeholder="Enter AcceptedCmp2 value (int)">
-    </div>
-
-    <div class="form-group">
-        <label for="complain">Complain:</label>
-        <input type="text" id="complain" name="complain" placeholder="Enter Complain value (int)">
-    </div>
-
-    <div class="form-group">
-        <label for="response">Response:</label>
-        <input type="text" id="response" name="response" placeholder="Enter Response value (int)">
     </div>
 
     <div class="form-group">
@@ -132,23 +23,8 @@
     </div>
 
     <div class="form-group">
-        <label for="living_with">Living_with:</label>
-        <input type="text" id="living_with" name="living_with" placeholder="Enter Living_with value">
-    </div>
-
-    <div class="form-group">
         <label for="children">Children:</label>
         <input type="text" id="children" name="children" placeholder="Enter Children value (int)">
-    </div>
-
-    <div class="form-group">
-        <label for="family_size">Family_size:</label>
-        <input type="text" id="family_size" name="family_size" placeholder="Enter Family_size value (int)">
-    </div>
-
-    <div class="form-group">
-        <label for="is_parent">Is_parent:</label>
-        <input type="text" id="is_parent" name="is_parent" placeholder="Enter Is_parent value">
     </div>
 
     <div style="clear:both;"></div>
