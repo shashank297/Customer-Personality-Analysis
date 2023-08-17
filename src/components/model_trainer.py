@@ -28,7 +28,7 @@ class ModelTrainer:
             logging.info('Initiating model training')
 
             # Use K-Means clustering with 4 clusters
-            kmeans = KMeans(n_clusters=4)
+            kmeans = KMeans(n_clusters=4,init='k-means++', random_state=42)
             yhat_kmeans = kmeans.fit_predict(train_array)
 
             logging.info('Model is trained successfully')

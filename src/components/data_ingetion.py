@@ -30,7 +30,7 @@ class DataIngestion:
 
             df.drop('Unnamed: 0',axis=1,inplace=True)
             try:
-                # self.DatabaseManager.create_table(df, self.ingestion_config.file_names)
+                # self.DatabaseManager.create_table(df, self.ingestion_config.file_names) 80   
                 # logging.info('Successfully created table in the database')
 
                 self.DatabaseManager.execute_values(df, self.ingestion_config.file_names)
