@@ -28,8 +28,7 @@ def results_page():
         results = round(pred[0], 2)
         st.session_state['results'] = results
 
-    if 'results' in st.session_state:
-        final_new_data = data.get_data_as_dataframe()
+        final_new_data = data.get_data_as_dataframe()  # Assign here
         st.dataframe(final_new_data)
         st.write(f'### As per the above info the customer fall into Cluster {results}')
     else:

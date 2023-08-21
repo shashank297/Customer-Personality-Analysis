@@ -4,11 +4,12 @@ from pages import a_form_page_1, b_results_page_2, c_charts_page_3
 st.set_page_config(
     page_title="Hello",
     page_icon="👋",
+    layout="wide"
 )
 
 # st.sidebar.success("Select a demo above.")
 
-st.sidebar.markdown("### Navigation")
+# st.sidebar.markdown("### Navigation")
 selected_demo = st.sidebar.radio(
     "Choose a demo",
     ("Form Page", "Results Page", "Charts Page")
