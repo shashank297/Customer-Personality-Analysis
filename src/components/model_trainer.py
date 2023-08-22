@@ -42,6 +42,11 @@ class ModelTrainer:
             df = self.db.execute_query(f'select * from {tablename}', fetch=True)
             df["Clusters"] = yhat_kmeans
 
+            df = df.replace({'Clusters': {'0': 'Bronze', '3': 'Platinum', '2': 'Silver', '1': 'Gold'}})
+
+
+            
+
             merge_table = 'merge_table'
             logging.info(f'Initiating table uploading to the database as {merge_table}')
 
