@@ -59,11 +59,22 @@ class DataCleaning:
 
         data.Is_Parent = pd.to_numeric(data.Is_Parent, errors='coerce')
 
+
+        filename2 = 'Without_encoding'
+
+        try:
+            self.db.execute_values(data, filename2)
+            logging.info('DataFrame data values have been successfully uploaded to the database table')
+
+        except Exception as e:
+            logging.info('Exception occurred at data_process.py file during creating table/execute_value')
+            raise CustomException(e, sys)
+
+
+
         #Get list of categorical variables
         s = (data.dtypes == 'object')
         object_cols = list(s[s].index)
-
-        logging.info(object_cols)
 
         LE = LabelEncoder()
         for i in object_cols:

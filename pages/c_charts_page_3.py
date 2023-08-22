@@ -24,6 +24,7 @@ def charts_page():
         results = st.session_state.results
         results = str(results)
         query = f"SELECT * FROM merge_table WHERE clusters = '{results}'"
+        
 
     # Check if the form has been submitted
     if hasattr(st.session_state, 'form_submitted') and st.session_state.form_submitted:
@@ -35,6 +36,7 @@ def charts_page():
 
         # Execute the query to fetch data based on results
         df = DB.execute_query(query, fetch=True)
+        df.family_size.replace({1:'Single',2:'Partner'},inplace=True)
 
         st.title(f"Charts Page for Cluster {results}")
         st.write("Display KPIs for the Cluster with Average values within the same Cluster.")
@@ -119,7 +121,7 @@ def charts_page():
         
         
         # Create subplots with two columns and one row, specifying the subplot types
-        fig1 = sp.make_subplots(rows=1, cols=2, specs=[[{'type': 'pie'}, {'type': 'scatter'}]], subplot_titles=("Children Ratio", "Spending vs Income"))
+        fig1 = sp.make_subplots(rows=1, cols=2, specs=[[{'type': 'pie'}, {'type': 'sunburst'}]], subplot_titles=("Children Ratio", "Spending vs Income"))
 
         # First Chart - Pie Chart
         children_counts = df['children'].value_counts()
@@ -133,16 +135,18 @@ def charts_page():
         ), row=1, col=1)
 
 
-        # Second Chart - Scatter Plot
-        scatter_trace = px.scatter(df, x='income', y='spent', color='clusters', color_discrete_sequence=px.colors.qualitative.Set1).data[0]
-        fig1.add_trace(scatter_trace, row=1, col=2)
+        sunburst_fig = px.sunburst(df, path=['family_size', 'education', 'children'], values='spent', color='education')
+        sunburst_trace = sunburst_fig['data'][0]
+        fig1.add_trace(sunburst_trace, row=1, col=2)
+
+          # Customize the layout
+        fig1.update_layout(
+            showlegend=True,
+            height=500,
+            width=1000,
+        )
 
         fig1.update_layout(showlegend=False)
-
-
-        # Update subplot layout for the second chart
-        fig1.update_xaxes(title_text="Income", row=1, col=2)
-        fig1.update_yaxes(title_text="Total Spendings", row=1, col=2)
 
         # Create the Streamlit layout
         st.markdown("### Children Ratio and Spending vs Income")
@@ -170,7 +174,7 @@ def charts_page():
         )
 
         # Customize the first subplot
-        fig2.update_xaxes(categoryorder='total ascending', tickangle=45, title_text='Clusters', title_font=dict(size=18), row=1, col=1)
+        fig2.update_xaxes(categoryorder='total ascending', tickangle=45, title_text='Category', title_font=dict(size=18), row=1, col=1)
         fig2.update_yaxes(title_text='Purchases', title_font=dict(size=18), row=1, col=1)
 
         # Assuming cam is your DataFrame with campaign-wise purchases
@@ -198,6 +202,41 @@ def charts_page():
 
         st.markdown("### Segment-wise distribution on total purchases and campaign distribution.")
         st.plotly_chart(fig2, use_container_width=True)
+
+
+
+        # Create a subplot
+        fig3 = sp.make_subplots(rows=1, cols=2, specs=[[{'type': 'scatter'}, {'type': 'sunburst'}]], subplot_titles=("Scatter Plot", "Sunburst Plot"))
+
+        # df.income=df.income[df.income<200000]
+        # df.family_size.replace({1:'Single',2:'Partner'},inplace=True)
+
+                # Second Chart - Scatter Plot
+        scatter_trace = px.scatter(df, x='income', y='spent', color='family_size', color_discrete_sequence=px.colors.qualitative.Set1).data[0]
+        fig3.add_trace(scatter_trace, row=1, col=1)
+
+
+        # Update subplot layout for the second chart
+        fig3.update_xaxes(title_text="Income", row=1, col=2)
+        fig3.update_yaxes(title_text="Total Spendings", row=1, col=2)
+
+        # Sunburst plot
+        sunburst_fig = px.sunburst(df, path=['family_size', 'education', 'children'], values='spent', color='education')
+        sunburst_trace = sunburst_fig['data'][0]
+        fig3.add_trace(sunburst_trace, row=1, col=2)
+
+        # Customize the layout
+        fig3.update_layout(
+            showlegend=True,
+            height=500,
+            width=1000,
+        )
+
+        st.markdown("### Segment-wise distribution on total purchases and campaign distribution.")
+        st.plotly_chart(fig3, use_container_width=True)
+
+        st.dataframe(df)
+
 
 
 
