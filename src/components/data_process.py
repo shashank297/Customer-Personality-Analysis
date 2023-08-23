@@ -44,7 +44,7 @@ class DataCleaning:
         df.loc[(df['Age'] >= 13) & (df['Age'] <= 19), 'AgeGroup'] = 'Teen'
         df.loc[(df['Age'] >= 20) & (df['Age']<= 39), 'AgeGroup'] = 'Adult'
         df.loc[(df['Age'] >= 40) & (df['Age'] <= 59), 'AgeGroup'] = 'Middle Age Adult'
-        df.loc[(df['Age'] > 60), 'AgeGroup'] = 'Senior Adult'
+        df.loc[(df['Age'] >= 60), 'AgeGroup'] = 'Senior Adult'
         df.rename(columns={
             "mntwines": "Wines",
             "mntfruits": "Fruits",
@@ -53,6 +53,9 @@ class DataCleaning:
             "mntsweetproducts": "Sweets",
             "mntgoldprods": "Gold"
         }, inplace=True)
+
+        df = df[df.Age < 100]
+        df = df[df.income < 120000]
 
 
         filename2 = 'Without_encoding'

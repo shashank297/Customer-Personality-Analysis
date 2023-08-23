@@ -4,6 +4,7 @@ from src.exception import CustomException
 from src.logger import logging
 from src.utils import load_object
 import pandas as pd
+import logging
 
 class PredictPipeline:
 
@@ -32,10 +33,6 @@ class PredictPipeline:
         return cluster_assignments
 
 
-import pandas as pd
-import logging
-
-
 class CustomData:
     def __init__(
         self,
@@ -62,6 +59,7 @@ class CustomData:
             }
 
             df = pd.DataFrame(custom_data_input_dict)
+            df = df.replace({'Clusters': {'0': 'Bronze', '3': 'Platinum', '2': 'Silver', '1': 'Gold'}})
             logging.info('Dataframe Gathered')
             return df
 
