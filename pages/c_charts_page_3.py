@@ -234,11 +234,11 @@ def charts_page():
         st.plotly_chart(fig6, use_container_width=True)
 
         # create two columns for charts
-        fig_col1, fig_col2 = st.columns(2)
+        fig_col1, fig_col2,fig_col3 = st.columns(3)
 
         with fig_col1:
             st.markdown("#### Percentage Wise Age Distribution")
-            age_group = px.pie(labels = agegroup_counts.index, values = agegroup_counts.values, names = agegroup_counts.index, width = 500, height = 500)
+            age_group = px.pie(labels = agegroup_counts.index, values = agegroup_counts.values, names = agegroup_counts.index)
             age_group.update_traces(textposition = 'inside', 
                   textinfo = 'percent + label', 
                   hole = 0.4, 
@@ -253,10 +253,21 @@ def charts_page():
             st.write(age_group)
         
         with fig_col2:
+            st.markdown("#### Scatter Plot")
+            # Define your custom colors
+            custom_colors = {'Partner': '#57274e', 'Single': '#b43058'}
+
+            # Create the scatter plot with custom colors
+            fig = px.scatter(df, x='spent', y='income', color='family_size',
+                            hover_name='income', color_discrete_map=custom_colors)
+            
+            st.plotly_chart(fig)
+        
+        with fig_col3:
             st.markdown("#### Segregation Based On Relationship, Education, Children")
             
             # Create the customized sunburst chart
-            sunburst_fig = px.sunburst(df, path=['family_size', 'education', 'children'], values='spent', color='education', width=500, height=500,
+            sunburst_fig = px.sunburst(df, path=['family_size', 'education', 'children'], values='spent', color='education',
                                         color_discrete_sequence=['#57274e', '#b2182b', '#b43058', '#d35454'],
                                         custom_data=['spent', 'family_size', 'education', 'children'])
             
