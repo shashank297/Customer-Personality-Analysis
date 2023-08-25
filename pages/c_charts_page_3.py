@@ -234,7 +234,7 @@ def charts_page():
         st.plotly_chart(fig6, use_container_width=True)
 
         # create two columns for charts
-        fig_col1, fig_col2,fig_col3 = st.columns(3)
+        fig_col1, fig_col2 = st.columns(2)
 
         with fig_col1:
             st.markdown("#### Percentage Wise Age Distribution")
@@ -253,17 +253,6 @@ def charts_page():
             st.write(age_group)
         
         with fig_col2:
-            st.markdown("#### Scatter Plot")
-            # Define your custom colors
-            custom_colors = {'Partner': '#57274e', 'Single': '#b43058'}
-
-            # Create the scatter plot with custom colors
-            fig = px.scatter(df, x='spent', y='income', color='family_size',
-                            hover_name='income', color_discrete_map=custom_colors)
-            
-            st.plotly_chart(fig)
-        
-        with fig_col3:
             st.markdown("#### Segregation Based On Relationship, Education, Children")
             
             # Create the customized sunburst chart
@@ -292,14 +281,14 @@ def charts_page():
         cluster_purchases=df[['numdealspurchases','numwebpurchases','numcatalogpurchases','numstorepurchases','numwebvisitsmonth']].sum()
         cam=df[['acceptedcmp1', 'acceptedcmp2', 'acceptedcmp3', 'acceptedcmp4','acceptedcmp5', 'response']].sum()
         # Create subplots with 2 rows and 1 column
-        fig2 = sp.make_subplots(rows=1, cols=2,subplot_titles=("Segment-wise distribution on total purchases.", "campaign distribution"))
+        fig2 = sp.make_subplots(rows=1, cols=3,subplot_titles=("Segment-wise distribution on total purchases.", "campaign distribution","scater plot"))
 
         # Assuming cluster_purchases is your DataFrame with cluster-wise purchases
         fig2.add_trace(
             go.Bar(
                 x=cluster_purchases.index,
                 y=cluster_purchases.values,
-                marker_color=['#dc4c4c', '#157394', '#589cb4', '#bcb4ac', '#3c444c'],
+                marker_color=['#e28f71', '#d35454', '#b2182b', '#b43058', '#57274e', '#832b5a'],
                 text=cluster_purchases.values,
                 texttemplate='%{text:.2s}',
                 textposition='outside',
@@ -317,7 +306,7 @@ def charts_page():
             go.Bar(
                 x=cam.index,
                 y=cam.values,
-                marker_color=['#dc4c4c', '#157394', '#589cb4', '#bcb4ac', '#3c444c','#3c444c'],
+                marker_color=['#e28f71', '#d35454', '#b2182b', '#b43058', '#57274e', '#832b5a'],
                 text=cam.values,
                 texttemplate='%{text:.2s}',
                 textposition='outside',
@@ -331,44 +320,24 @@ def charts_page():
         fig2.update_yaxes(title_text='No. of people', title_font=dict(size=18), row=1, col=2)
 
         fig2.update_layout(showlegend=False)
+        custom_colors = {'Partner': '#57274e', 'Single': '#b43058'}
+
+
+        # Create the scatter plot with custom colors
+        scatter_fig = px.scatter(df, x='spent', y='income', color='family_size',
+                        hover_name='income', color_discrete_map=custom_colors)
+
+        # Add all scatter plot data to the third subplot
+        for trace in scatter_fig.data:
+            fig2.add_trace(trace, row=1, col=3)
+
+
 
         # Set layout properties for the entire figure
         fig2.update_layout(height=600, width=800)
 
         st.markdown("### Segment-wise distribution on total purchases and campaign distribution.")
         st.plotly_chart(fig2, use_container_width=True)
-
-
-
-        # Create a subplot
-        fig3 = sp.make_subplots(rows=1, cols=2, specs=[[{'type': 'scatter'}, {'type': 'sunburst'}]], subplot_titles=("Scatter Plot", "Sunburst Plot"))
-
-        # df.income=df.income[df.income<200000]
-        # df.family_size.replace({1:'Single',2:'Partner'},inplace=True)
-
-                # Second Chart - Scatter Plot
-        scatter_trace = px.scatter(df, x='income', y='spent', color='family_size', color_discrete_sequence=px.colors.qualitative.Set1).data[0]
-        fig3.add_trace(scatter_trace, row=1, col=1)
-
-
-        # Update subplot layout for the second chart
-        fig3.update_xaxes(title_text="Income", row=1, col=2)
-        fig3.update_yaxes(title_text="Total Spendings", row=1, col=2)
-
-        # Sunburst plot
-        sunburst_fig = px.sunburst(df, path=['family_size', 'education', 'children'], values='spent', color='education')
-        sunburst_trace = sunburst_fig['data'][0]
-        fig3.add_trace(sunburst_trace, row=1, col=2)
-
-        # Customize the layout
-        fig3.update_layout(
-            showlegend=True,
-            height=500,
-            width=1000,
-        )
-
-        st.markdown("### Segment-wise distribution on total purchases and campaign distribution.")
-        st.plotly_chart(fig3, use_container_width=True)
 
     else:
         st.warning("Please submit the form on the Home page.")
