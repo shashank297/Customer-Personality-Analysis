@@ -27,10 +27,12 @@ class DataCleaning:
             raise CustomException(e,sys)
 
         # Process df data
-        df['dt_customer'] = pd.to_datetime(df['dt_customer']) #dt_customer
-        newest_customer_date = df['dt_customer'].max()
-        oldest_customer_date = df['dt_customer'].min()
-        df['Customer_For'] = (newest_customer_date - df['dt_customer']).dt.days
+        df = df.dropna()
+
+        df['dt_customer'] = pd.to_datetime(df['dt_customer'])
+        df['customer_for'] = 12.0 * (2015 - df.dt_customer.dt.year ) + (1 - df.dt_customer.dt.month)
+        df['dt_customer'] = pd.to_datetime(df['dt_customer'],format="%d-%m-%Y")
+        df['customer_for'] = 12.0 * (2015 - df.dt_customer.dt.year ) + (1 - df.dt_customer.dt.month)
 
         current_year = datetime.now().year
         df['Age'] = current_year - df['year_birth']
@@ -40,7 +42,7 @@ class DataCleaning:
         df['Family_Size'] = df['living_with'].replace({"Single": 1, "Partner": 2,"Alone":1})
         df['Is_Parent'] = np.where(df['children'] > 0, 1, 0)
         df['education'] = df['education'].replace({"Basic": "Undergraduate", "2n Cycle": "Undergraduate", "Graduation": "Graduate", "Master": "Postgraduate", "PhD": "Postgraduate"})
-        df['Customer_For'] = pd.to_numeric(df['Customer_For'], errors="coerce")
+        df['customer_for'] = pd.to_numeric(df['customer_for'], errors="coerce")
         df.loc[(df['Age'] >= 13) & (df['Age'] <= 19), 'AgeGroup'] = 'Teen'
         df.loc[(df['Age'] >= 20) & (df['Age']<= 39), 'AgeGroup'] = 'Adult'
         df.loc[(df['Age'] >= 40) & (df['Age'] <= 59), 'AgeGroup'] = 'Middle Age Adult'

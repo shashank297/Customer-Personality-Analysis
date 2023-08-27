@@ -1,4 +1,3 @@
-# Basic Imports
 import numpy as np
 import pandas as pd
 from sklearn.cluster import KMeans
@@ -31,7 +30,10 @@ class ModelTrainer:
             kmeans = KMeans(n_clusters=4,init='k-means++', random_state=42)
             yhat_kmeans = kmeans.fit_predict(train_array)
 
-            logging.info('Model is trained successfully')
+            # Calculate the Soliot score based on cluster sizes
+            soliot_score = self.calculate_soliot_score(train_array, yhat_kmeans)
+
+            logging.info(f'Model is trained successfully. Soliot Score: {soliot_score}')
             save_object(
                 file_path=self.model_trainer_config.trained_model_file_path,
                 obj=kmeans
@@ -42,10 +44,7 @@ class ModelTrainer:
             df = self.db.execute_query(f'select * from {tablename}', fetch=True)
             df["Clusters"] = yhat_kmeans
 
-            df = df.replace({'Clusters': {'0': 'Bronze', '3': 'Platinum', '2': 'Silver', '1': 'Gold'}})
-
-
-            
+            df.replace({'Clusters': {0: 'Bronze', 3: 'Platinum', 2: 'Silver', 1: 'Gold'}},inplace=True)
 
             merge_table = 'merge_table'
             logging.info(f'Initiating table uploading to the database as {merge_table}')
@@ -59,10 +58,11 @@ class ModelTrainer:
             logging.info('Exception occurred at Model Training')
             raise CustomException(e, sys)
 
-# # Usage
-# if __name__ == "__main__":
-#     # Sample usage of ModelTrainer
-#     trainer = ModelTrainer()
-#     train_data = np.random.rand(100, 10)  # Example training data
-#     table_name = "data_table"  # Example table name
-#     trainer.initiate_model_training(train_data, table_name)
+    def calculate_soliot_score(self, train_array, clusters):
+        # Calculate Soliot score based on the distribution of data points in clusters
+        cluster_sizes = [len(train_array[clusters == i]) for i in range(4)]
+
+        # Assuming Soliot score is the ratio of the smallest cluster size to the largest cluster size
+        soliot_score = min(cluster_sizes) / max(cluster_sizes)
+
+        return soliot_score

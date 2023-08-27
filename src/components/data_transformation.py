@@ -30,8 +30,8 @@ class DataTransformation:
             data_pipeline = Pipeline(
                 steps=[
                     ('imputer', SimpleImputer(strategy='median')),
-                    ('scaler', StandardScaler()),
-                    ('pca', PCA(n_components=3))
+                    #('scaler', StandardScaler()),
+                    #('pca', PCA(n_components=3))
                 ]
             )
 
