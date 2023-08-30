@@ -6,12 +6,11 @@ import pandas as pd
 from sklearn.model_selection import train_test_split
 from dataclasses import dataclass
 from src.components.variable import dataBase
-from src.utils import DatabaseManager
+from src.utils import PostgreSQLDataHandler
 
 
 @dataclass
 class DataIngestionconfig:
-    conn = dataBase.conn
     folder_path = os.path.join('Notebook', 'Data')
     file_names = os.listdir(folder_path)[0].split('.')[0]
 
@@ -19,7 +18,7 @@ class DataIngestionconfig:
 class DataIngestion:
     def __init__(self):
         self.ingestion_config = DataIngestionconfig()
-        self.DatabaseManager = DatabaseManager()  # Initialize the DatabaseManager
+        self.PostgreSQLDataHandler = PostgreSQLDataHandler()  # Initialize the PostgreSQLDataHandler
 
     def initiate_data_ingestion(self):
         logging.info('Data Ingestion Method Start')
@@ -28,12 +27,9 @@ class DataIngestion:
             df = pd.read_csv(os.path.join('Notebook/data', 'marketing_campaign.csv'))
             logging.info("Dataset Read as a Pandas dataframe")
 
-            df.drop('Unnamed: 0',axis=1,inplace=True)
+            df.drop('unnamed: 0',axis=1,inplace=True)
             try:
-                # self.DatabaseManager.create_table(df, self.ingestion_config.file_names) 80   
-                # logging.info('Successfully created table in the database')
-
-                self.DatabaseManager.execute_values(df, self.ingestion_config.file_names)
+                self.PostgreSQLDataHandler.upload_dataframe(df, self.ingestion_config.file_names)
                 logging.info('DataFrame values have been successfully uploaded to the database table')
 
             except Exception as e:
@@ -47,7 +43,3 @@ class DataIngestion:
             raise CustomException(e, sys)
         return self.ingestion_config.file_names
 
-
-# D=DataIngestion()
-
-# A=D.initiate_data_ingestion()

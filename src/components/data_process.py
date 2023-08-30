@@ -5,21 +5,20 @@ import os
 from src.logger import logging
 import sys
 from datetime import datetime
-from src.utils import DatabaseManager
+from src.utils import PostgreSQLDataHandler
 from src.components.variable import dataBase
 from sklearn.preprocessing import LabelEncoder, StandardScaler
 from sklearn.decomposition import PCA
 
 class DataCleaning:
     def __init__(self):
-        self.db = DatabaseManager()
-        self.conn = dataBase.conn
+        self.db = PostgreSQLDataHandler()
 
     def process_data_and_reduce_dimensionality(self, filename):
 
         try:
             logging.info('Database table reading start in data_process.py')
-            df=self.db.execute_query(f'select * from {filename}',fetch=True)
+            df=self.db.fetch_data(filename)
             logging.info('In data_process.py database table converted into df')
 
         except Exception as e:
@@ -29,10 +28,11 @@ class DataCleaning:
         # Process df data
         df = df.dropna()
 
-        df['dt_customer'] = pd.to_datetime(df['dt_customer'])
-        df['customer_for'] = 12.0 * (2015 - df.dt_customer.dt.year ) + (1 - df.dt_customer.dt.month)
-        df['dt_customer'] = pd.to_datetime(df['dt_customer'],format="%d-%m-%Y")
-        df['customer_for'] = 12.0 * (2015 - df.dt_customer.dt.year ) + (1 - df.dt_customer.dt.month)
+        # Assuming the date strings are in the format '%d-%m-%Y'
+        df['dt_customer'] = pd.to_datetime(df['dt_customer'], format='%d-%m-%Y')
+
+        # Calculate the 'customer_for' column
+        df['customer_for'] = 12.0 * (2015 - df['dt_customer'].dt.year) + (1 - df['dt_customer'].dt.month)
 
         current_year = datetime.now().year
         df['Age'] = current_year - df['year_birth']
@@ -60,10 +60,10 @@ class DataCleaning:
         df = df[df.income < 120000]
 
 
-        filename2 = 'Without_encoding'
+        filename2 = 'without_encoding'
 
         try:
-            self.db.execute_values(df, filename2)
+            self.db.upload_dataframe(df, filename2)
             logging.info('DataFrame data values have been successfully uploaded to the database table')
 
         except Exception as e:
@@ -89,17 +89,10 @@ class DataCleaning:
             
         print("All features are now numerical")
 
-
-        
         filename1 = 'cleaned_data'
 
         try:
-            # self.db.create_table(data, filename1)
-            # logging.info(f'Successfully created table in the database table name: {filename1}')
-
-
-
-            self.db.execute_values(data, filename1)
+            self.db.upload_dataframe(data, filename1)
             logging.info('DataFrame data values have been successfully uploaded to the database table')
 
         except Exception as e:
@@ -107,17 +100,3 @@ class DataCleaning:
             raise CustomException(e, sys)
 
         return filename1,filename2
-
-# data_transformer = DataTransformationConfig()
-
-# # Step 2: Load your data into a pandas DataFrame
-# # Assuming you have your data in a CSV file named 'customer_data.csv'
-# db=DatabaseManager()
-# customer_data = db.execute_query('select * from marketing_campaign',fetch=True)
-
-# # Step 3: Call the process_data_and_reduce_dimensionality method and pass the DataFrame
-# filename1= data_transformer.process_data_and_reduce_dimensionality(customer_data)
-
-# df1=db.execute_query(f'select * from {filename1}',fetch=True)
-# logging.info(f'file names is : {filename1}')
-# logging.info(f'df1: \n {df1.head()}')

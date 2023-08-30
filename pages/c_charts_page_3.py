@@ -1,7 +1,6 @@
 import streamlit as st
-from src.components.variable import dataBase
 import pandas as pd
-from src.utils import DatabaseManager
+from src.utils import PostgreSQLDataHandler
 from st_aggrid import AgGrid
 import plotly.subplots as sp
 import plotly.express as px
@@ -15,33 +14,31 @@ def charts_page():
         percentage_change = ((current_value - mean_value) / mean_value) * 100
         return f"{round(percentage_change, 2)}%"
     # Initialize database connection
-    DB = DatabaseManager()
-
-    # Retrieve connection from dataBase module
-    conn = dataBase.conn
+    DB = PostgreSQLDataHandler()
 
     # Check if the results variable is present in the session state
     if hasattr(st.session_state, 'results'):
         results = st.session_state.results
         results = str(results)
-        query = f"SELECT * FROM merge_table WHERE clusters = '{results}'"
+        table_name = 'merge_table'
         
 
     # Check if the form has been submitted
     if hasattr(st.session_state, 'form_submitted') and st.session_state.form_submitted:
         income = st.session_state.income
         customer_for = st.session_state.customer_for
-        age = st.session_state.age
-        spent = st.session_state.spent
+        Age = st.session_state.Age
+        Spent = st.session_state.Spent
         children = st.session_state.children
 
         # Execute the query to fetch data based on results
-        df = DB.execute_query(query, fetch=True)
-        df.family_size.replace({1:'Single',2:'Partner'},inplace=True)
+        df = DB.fetch_data(table_name)
+        df=df[df.Clusters==results]
+        df.Family_Size.replace({1:'Single',2:'Partner'},inplace=True)
         children_counts=df.children.value_counts()
         education_counts=df.education.value_counts()
         living_with_counts=df.living_with.value_counts()
-        agegroup_counts=df.agegroup.value_counts()
+        agegroup_counts=df.AgeGroup.value_counts()
 
         st.title(f"Charts Page for Cluster {results}")
         st.write("Display KPIs for the Cluster with Average values within the same Cluster.")
@@ -64,14 +61,14 @@ def charts_page():
 
         kpi3.metric(
             label="Age 🎂",
-            value=round(age),
-            delta=calculate_percentage_change(age, df.age.mean()),
+            value=round(Age),
+            delta=calculate_percentage_change(Age, df.Age.mean()),
         )
 
         kpi4.metric(
             label="Spent 💳",
-            value=f"${round(spent, 2)}",
-            delta=calculate_percentage_change(spent, df.spent.mean()),
+            value=f"${round(Spent, 2)}",
+            delta=calculate_percentage_change(Spent, df.Spent.mean()),
         )
 
         kpi5.metric(
@@ -83,16 +80,16 @@ def charts_page():
         # top-level filters
         # Create a subplot with 2 rows and 2 columns
         fig = sp.make_subplots(rows=1, cols=4, 
-            subplot_titles=("Age Distribution 🎂", "Days as Customer ⏳", "spent Distribution 💳", "Income Distribution 💰"))
+            subplot_titles=("Age Distribution 🎂", "Days as Customer ⏳", "Spent Distribution 💳", "Income Distribution 💰"))
 
         # Age distribution chart
-        fig.add_trace(go.Histogram(x=df['age'], marker_color='#b43058', xbins=dict(size=5)), row=1, col=1)
+        fig.add_trace(go.Histogram(x=df['Age'], marker_color='#b43058', xbins=dict(size=5)), row=1, col=1)
 
         # Days as Customer distribution chart
         fig.add_trace(go.Histogram(x=df['customer_for'], marker_color='#d35454', xbins=dict(size=5)), row=1, col=2)
 
         # Children distribution chart
-        fig.add_trace(go.Histogram(x=df['spent'], marker_color='#b2182b', xbins=dict(size=5)), row=1, col=3)
+        fig.add_trace(go.Histogram(x=df['Spent'], marker_color='#b2182b', xbins=dict(size=5)), row=1, col=3)
 
         # Income distribution chart
         fig.add_trace(go.Histogram(x=df['income'], marker_color='#e28f71', xbins=dict(size=10000)), row=1, col=4)
@@ -125,7 +122,7 @@ def charts_page():
         st.plotly_chart(fig, use_container_width=True)
 
 
-        products = df[['wines', 'fruits', 'meat', 'fish', 'sweets', 'gold']]
+        products = df[['Wines', 'Fruits', 'Meat', 'Fish', 'Sweets', 'Gold']]
         product_means = products.mean(axis=0).sort_values(ascending=False)
         product_means_df = pd.DataFrame(list(product_means.items()), columns=['Product', 'Average Spending'])
 
@@ -146,19 +143,19 @@ def charts_page():
 
         fig2 = go.Figure(data=[trace2], layout=layout2)
 
-        # Calculate average spending by age group
-        agegroupspending = df.groupby('agegroup')['spent'].mean().reset_index()
+        # Calculate average spending by Age group
+        agegroupspending = df.groupby('AgeGroup')['Spent'].mean().reset_index()
 
         # Replace 'Alone' with 'Single' in the 'living_with' column
         df['living_with'] = df['living_with'].str.replace('Alone', 'Single')
 
-        # Group by 'living_with' and calculate the mean of 'spent'
-        maritalspending = df.groupby('living_with')['spent'].mean().reset_index()
-        maritalspending = maritalspending.sort_values(by='spent', ascending=False)
+        # Group by 'living_with' and calculate the mean of 'Spent'
+        maritalspending = df.groupby('living_with')['Spent'].mean().reset_index()
+        maritalspending = maritalspending.sort_values(by='Spent', ascending=False)
 
         # Create a Plotly bar chart for marital spending
         trace1 = go.Bar(
-            x=maritalspending['spent'],
+            x=maritalspending['Spent'],
             y=maritalspending['living_with'],
             orientation='h',
             marker=dict(color='rgb(255, 99, 71)'),  # Use the 'rocket' palette color
@@ -173,14 +170,14 @@ def charts_page():
 
         fig1 = go.Figure(data=[trace1], layout=layout1)
 
-        # Create the age spending bar chart
-        agegroupspending = agegroupspending.sort_values(by='spent', ascending=False)
+        # Create the Age spending bar chart
+        agegroupspending = agegroupspending.sort_values(by='Spent', ascending=False)
 
         age_spending = go.Figure()
 
         age_spending.add_trace(go.Bar(
-            x=agegroupspending['spent'],
-            y=agegroupspending['agegroup'],
+            x=agegroupspending['Spent'],
+            y=agegroupspending['AgeGroup'],
             orientation='h',
             marker=dict(color=['#e28f71', '#b43058', '#57274e']),
         ))
@@ -197,17 +194,17 @@ def charts_page():
         # Create a subplot with 1 row and 3 columns
         fig6 = sp.make_subplots(rows=1, cols=3, subplot_titles=('Average Spending by Age Group', 'Average Spending by Marital Status', 'Average Spending on Products'))
 
-        # Add the age spending chart to the first column of the subplot
+        # Add the Age spending chart to the first column of the subplot
         fig6.add_trace(go.Bar(
-            x=agegroupspending['spent'],
-            y=agegroupspending['agegroup'],
+            x=agegroupspending['Spent'],
+            y=agegroupspending['AgeGroup'],
             orientation='h',
             marker=dict(color=['#e28f71', '#b43058', '#57274e']),
         ), row=1, col=1)
 
         # Add the marital spending chart to the second column of the subplot
         fig6.add_trace(go.Bar(
-            x=maritalspending['spent'],
+            x=maritalspending['Spent'],
             y=maritalspending['living_with'],
             orientation='h',
             marker=dict(color=['#b43058', '#57274e', '#472345', '#d35454', '#b2182b']),
@@ -256,9 +253,9 @@ def charts_page():
             st.markdown("#### Segregation Based On Relationship, Education, Children")
             
             # Create the customized sunburst chart
-            sunburst_fig = px.sunburst(df, path=['family_size', 'education', 'children'], values='spent', color='education',
+            sunburst_fig = px.sunburst(df, path=['Family_Size', 'education', 'children'], values='Spent', color='education',
                                         color_discrete_sequence=['#57274e', '#b2182b', '#b43058', '#d35454'],
-                                        custom_data=['spent', 'family_size', 'education', 'children'])
+                                        custom_data=['Spent', 'Family_Size', 'education', 'children'])
             
             # Customize the text color to white
             sunburst_fig.update_traces(textinfo='label+percent parent', insidetextfont=dict(color='white'))
@@ -324,7 +321,7 @@ def charts_page():
 
 
         # Create the scatter plot with custom colors
-        scatter_fig = px.scatter(df, x='spent', y='income', color='family_size',
+        scatter_fig = px.scatter(df, x='income', y='Spent', color='Family_Size',
                         hover_name='income', color_discrete_map=custom_colors)
 
         # Add all scatter plot data to the third subplot

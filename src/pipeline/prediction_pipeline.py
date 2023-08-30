@@ -21,10 +21,10 @@ class PredictPipeline:
             agglomerative_clustering_model = load_object(model_path)
 
             # Preprocess the features
-            data_scaled = preprocessor.transform(features)
+            # data_scaled = preprocessor.transform(features)
 
             # Predict cluster assignments using the agglomerative_clustering_model
-            cluster_assignments = agglomerative_clustering_model.predict(data_scaled)
+            cluster_assignments = agglomerative_clustering_model.predict(features)
 
         except Exception as e:
             logging.info("Exception occurred in clustering prediction")
@@ -51,11 +51,11 @@ class CustomData:
     def get_data_as_dataframe(self):
         try:
             custom_data_input_dict = {
-                'income': [self.Income],
+                'Age': [self.Age],
+                'Spent': [self.Spent],
                 'customer_for': [self.Customer_for],
-                'age': [self.Age],
-                'spent': [self.Spent],
-                'children': [self.Children]
+                'children': [self.Children],
+                'income': [self.Income],
             }
 
             df = pd.DataFrame(custom_data_input_dict)

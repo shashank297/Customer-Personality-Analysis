@@ -3,91 +3,46 @@ import pandas as pd
 import os
 import sys
 import psycopg2.extras as extras
+from sqlalchemy import create_engine  # Import create_engine from SQLAlchemy
 from src.components.variable import dataBase
 from src.logger import logging
 from src.exception import CustomException
+from sklearn.metrics import silhouette_score
+import numpy as np
+from sklearn.cluster import KMeans
 import pickle
-logging.info('ss')
-class DatabaseManager:
-    def __init__(self):
-        self.conn = dataBase.conn
 
-    def create_table(self, df, table_name):
-        with self.conn.cursor() as cur:
-            columns = df.columns
-            dtypes = df.dtypes
-            query = f"CREATE TABLE IF NOT EXISTS {table_name} ("
-            for col, dtype in zip(columns, dtypes):
-                sql_type = self.get_sql_type(dtype)
-                query += f"{col} {sql_type}, "
-            query = query.rstrip(", ")
-            query += ")"
-            cur.execute(query)
-            self.conn.commit()
-
-    def get_sql_type(self, dtype):
-        if dtype == 'object':
-            return 'TEXT'
-        elif dtype == 'int64':
-            return 'INTEGER'
-        elif dtype == 'float64':
-            return 'REAL'
-        elif dtype == 'bool':
-            return 'BOOLEAN'
-        elif dtype == '<M8[ns]':
-            return 'TIMESTAMP'
-        else:
-            return 'TEXT'
-
-    def execute_values(self, df, table_name):
-        with self.conn.cursor() as cur:
-            try:
-                cur.execute("SELECT EXISTS (SELECT FROM information_schema.tables WHERE table_name = %s)", (table_name,))
-                table_exists = cur.fetchone()[0]
-                if not table_exists:
-                    self.create_table(df, table_name)
-                    tuples = [tuple(row) for _, row in df.iterrows()]
-                    cols = ','.join(df.columns)
-                    query = "INSERT INTO %s(%s) VALUES %%s" % (table_name, cols)
-                    psycopg2.extras.execute_values(cur, query, tuples)
-                    self.conn.commit()
-                    logging.info("The DataFrame is inserted")
-                # else:
-                    # logging.info("Table is already exists in the database")
-            except (Exception, psycopg2.DatabaseError) as error:
-                logging.info("Error: %s" % error)
-                self.conn.rollback()
-
-    def execute_query(self, query, commit=False, fetch=False):
-        with self.conn.cursor() as cur:
-            try:
-                cur.execute(query)
-
-                if fetch:
-                    try:
-                        records = cur.fetchall()
-                        columns = [desc[0] for desc in cur.description]
-                        df = pd.DataFrame(records, columns=columns)
-                        return df
-                    except Exception as e:
-                        logging.info(f'Done fetchall without col: Error: {e}')
-
-                if commit:
-                    try:
-                        self.conn.commit()
-                        logging.info('Done commit')
-                    except Exception as e:
-                        logging.info(f'There is an error in commit: {e}')
-            except Exception as e:
-                logging.info(f"There is an error in query: {e}")
-            finally:
-                self.conn.rollback()
-    def rollback_transaction(self):
+class PostgreSQLDataHandler:
+    def __init__(self,db_url=dataBase.db_url):
+        self.engine = create_engine(db_url)
+    
+    def upload_dataframe(self, df, table_name):
         try:
-            self.conn.rollback()
-            logging.info("Transaction rolled back successfully.")
-        except psycopg2.Error as e:
-            logging.info("Error while rolling back the transaction:", e)
+            df.to_sql(table_name, self.engine, if_exists='replace', index=False)
+            logging.info(f"DataFrame successfully uploaded to '{table_name}' in PostgreSQL.")
+            return f"DataFrame successfully uploaded to '{table_name}' in PostgreSQL."
+        except Exception as e:
+            raise CustomException(e, sys)
+            logging.error(f"An error occurred: {str(e)}")
+            return f"An error occurred: {str(e)}"
+
+    def fetch_data(self, table_name):
+        try:
+            query = f"SELECT * FROM {table_name}"
+            df = pd.read_sql(query, self.engine)
+            return df
+        except Exception as e:
+            raise CustomException(e, sys)
+            logging.error(f"An error occurred: {str(e)}")
+            return None  # Return None to indicate an error
+
+    def close_connection(self):
+        try:
+            self.engine.dispose()  # Close the database connection
+            logging.info("Database connection closed.")
+        except Exception as e:
+            raise CustomException(e, sys)
+            logging.error(f"An error occurred while closing the connection: {str(e)}")
 
 
 
@@ -110,6 +65,22 @@ def load_object(file_path):
     except Exception as e:
         logging.info('Exception Occured in load_object function utils')
         raise CustomException(e,sys)
+
+def calculate_scores(train_array, num_clusters):
+    # Perform clustering on the training data using KMeans as an example
+    kmeans = KMeans(n_clusters=num_clusters, random_state=42)
+    clusters = kmeans.fit_predict(train_array)
+
+    # Calculate the silhouette score
+    silhouette_avg = silhouette_score(train_array, clusters)
+
+    # Calculate the sizes of each cluster
+    cluster_sizes = [np.sum(clusters == i) for i in range(num_clusters)]
+
+    # Calculate the Soliot score as the ratio of the smallest to the largest cluster size
+    soliot_score = min(cluster_sizes) / max(cluster_sizes)
+
+    return silhouette_avg, soliot_score
 
 
 

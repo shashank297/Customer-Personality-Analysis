@@ -3,11 +3,16 @@ import pandas as pd
 from sklearn.cluster import KMeans
 from src.exception import CustomException
 from src.logger import logging
-from src.utils import DatabaseManager
+from src.utils import PostgreSQLDataHandler,calculate_scores
 from src.components.variable import dataBase
 from src.utils import save_object
-from dataclasses import dataclass
+from kneed import KneeLocator
 import sys
+from dataclasses import dataclass
+import warnings
+if not sys.warnoptions:
+    warnings.simplefilter("ignore")
+np.random.seed(42)
 import os
 
 @dataclass 
@@ -18,22 +23,32 @@ class ModelTrainer:
 
     def __init__(self):
         self.model_trainer_config = ModelTrainerConfig()
-        self.db = DatabaseManager()
-        self.conn = dataBase.conn
+        self.db = PostgreSQLDataHandler()
+        self.calculate_scores=calculate_scores
 
     def initiate_model_training(self, train_array, tablename):
 
         try:
             logging.info('Initiating model training')
 
+            wcss=[]
+            for k in range(2,11):
+                kmean=KMeans(n_clusters=k,init="k-means++")
+                kmean.fit(train_array)
+                wcss.append(kmean.inertia_)
+
+            k=KneeLocator(range(2,11),wcss,curve='convex',direction='decreasing')
+
+
             # Use K-Means clustering with 4 clusters
-            kmeans = KMeans(n_clusters=4,init='k-means++', random_state=42)
-            yhat_kmeans = kmeans.fit_predict(train_array)
+            kmeans = KMeans(n_clusters=k.elbow,init='k-means++', random_state=42).fit(train_array)
+            yhat_kmeans = kmeans.predict(train_array)
 
             # Calculate the Soliot score based on cluster sizes
-            soliot_score = self.calculate_soliot_score(train_array, yhat_kmeans)
+            soliot_score,silhouette_score = self.calculate_scores(train_array,4)
 
-            logging.info(f'Model is trained successfully. Soliot Score: {soliot_score}')
+            logging.info(f'Model is trained successfully. Soliot Score: {soliot_score} silhouette_score: {silhouette_score}')
+            
             save_object(
                 file_path=self.model_trainer_config.trained_model_file_path,
                 obj=kmeans
@@ -41,28 +56,19 @@ class ModelTrainer:
 
             logging.info('Model.pkl file has been saved')
 
-            df = self.db.execute_query(f'select * from {tablename}', fetch=True)
+
+            df = self.db.fetch_data(tablename)
             df["Clusters"] = yhat_kmeans
 
-            df.replace({'Clusters': {0: 'Bronze', 3: 'Platinum', 2: 'Silver', 1: 'Gold'}},inplace=True)
+            df.replace({'Clusters': {3: 'Bronze', 0: 'Platinum', 1: 'Silver', 2: 'Gold'}},inplace=True)
 
             merge_table = 'merge_table'
             logging.info(f'Initiating table uploading to the database as {merge_table}')
 
-            # self.db.create_table(df=df, table_name=merge_table)
-            self.db.execute_values(df, merge_table)
+            self.db.upload_dataframe(df, merge_table)
 
             logging.info(f'Table has been uploaded to the database with table name {merge_table}')
 
         except Exception as e:
             logging.info('Exception occurred at Model Training')
             raise CustomException(e, sys)
-
-    def calculate_soliot_score(self, train_array, clusters):
-        # Calculate Soliot score based on the distribution of data points in clusters
-        cluster_sizes = [len(train_array[clusters == i]) for i in range(4)]
-
-        # Assuming Soliot score is the ratio of the smallest cluster size to the largest cluster size
-        soliot_score = min(cluster_sizes) / max(cluster_sizes)
-
-        return soliot_score

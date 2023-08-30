@@ -4,10 +4,11 @@ from dataclasses import dataclass
 from sklearn.compose import ColumnTransformer
 from sklearn.pipeline import Pipeline
 from sklearn.impute import SimpleImputer
+from src.exception import CustomException
 from sklearn.preprocessing import StandardScaler
 from sklearn.decomposition import PCA
 from src.logger import logging
-from src.utils import DatabaseManager, save_object
+from src.utils import PostgreSQLDataHandler, save_object
 
 @dataclass
 class DataTransformationConfig:
@@ -16,22 +17,22 @@ class DataTransformationConfig:
 class DataTransformation:
     def __init__(self):
         self.data_transformation_config = DataTransformationConfig()
-        self.db = DatabaseManager()
+        self.db = PostgreSQLDataHandler()
         self.preprocessing_obj = self.get_data_transformation_object()
 
     def get_data_transformation_object(self):
         try:
             logging.info('Data Transformation initiated')
 
-            cols = ['age', 'spent', 'customer_for', 'children', 'income']
+            cols = ['Age', 'Spent', 'customer_for', 'children', 'income']
 
             logging.info('Pipeline Initiated')
 
             data_pipeline = Pipeline(
                 steps=[
                     ('imputer', SimpleImputer(strategy='median')),
-                    #('scaler', StandardScaler()),
-                    #('pca', PCA(n_components=3))
+                    ('scaler', StandardScaler()),
+                    ('pca', PCA(n_components=3))
                 ]
             )
 
@@ -51,14 +52,16 @@ class DataTransformation:
         try:
             logging.info(f'Reading database table {filename} initiated')
 
-            query = f'select age, spent, customer_for, children, income from {filename}'
-            df = self.db.execute_query(query, fetch=True)
+            df = self.db.fetch_data(filename)
+            df=df[['Age', 'Spent', 'customer_for', 'children', 'income']]
 
             logging.info(f'Reading database table {filename} complete')
             logging.info(f'Dataframe Head: \n{df.head().to_string()}')
 
             logging.info('Applying preprocessing object on training dataset')
-            train_arr = self.preprocessing_obj.fit_transform(df)
+            # train_arr = self.preprocessing_obj.fit_transform(df)
+            
+            train_arr=df.copy()
 
             logging.info('Saving preprocessor pickle file')
             save_object(
@@ -76,9 +79,4 @@ class DataTransformation:
         except Exception as e:
             logging.error(f'Error occurred during data transformation: {e}')
             raise CustomException(e, sys)
-            # Optionally, you can rollback the transaction here if necessary
-            self.db.rollback_transaction()
 
-# Usage
-# a = DataTransformation()
-# a.initiate_data_transformation('cleaned_data')
