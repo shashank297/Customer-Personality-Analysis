@@ -13,7 +13,7 @@ def custom_chart(data_frame):
     # Embed the HTML into the Streamlit app
     components.html(pyg_html, height=1000, scrolling=True)
 
-def main():
+def c_main():
 
     pg = PostgreSQLDataHandler()
     df = pg.fetch_data('merge_table')
@@ -21,4 +21,4 @@ def main():
     custom_chart(df)
 
 
-main()
+c_main()
