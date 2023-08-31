@@ -1,8 +1,6 @@
-import psycopg2
 import pandas as pd
 import os
 import sys
-import psycopg2.extras as extras
 from sqlalchemy import create_engine  # Import create_engine from SQLAlchemy
 from src.components.variable import dataBase
 from src.logger import logging

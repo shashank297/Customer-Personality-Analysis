@@ -1,7 +1,6 @@
 import streamlit as st
 import pandas as pd
 from src.utils import PostgreSQLDataHandler
-from st_aggrid import AgGrid
 import plotly.subplots as sp
 import plotly.express as px
 from matplotlib import pyplot as plt
