@@ -319,25 +319,24 @@ def charts_page():
         fig2.update_layout(showlegend=False)
         custom_colors = {'Partner': '#57274e', 'Single': '#b43058'}
 
-
         # Create the scatter plot with custom colors
         scatter_fig = px.scatter(df, x='income', y='Spent', color='Family_Size',
-                        hover_name='income', color_discrete_map=custom_colors)
+                                hover_name='income', color_discrete_map=custom_colors)
 
         # Add all scatter plot data to the third subplot
         for trace in scatter_fig.data:
             fig2.add_trace(trace, row=1, col=3)
 
-
-
         # Set layout properties for the entire figure
         fig2.update_layout(height=600, width=800)
 
-        st.markdown("### Segment-wise distribution on total purchases and campaign distribution.")
-        st.plotly_chart(fig2, use_container_width=True)
+        # Add labels to the axes and title
+        fig2.update_xaxes(title_text='Income')
+        fig2.update_yaxes(title_text='Total Spent')
+        fig2.update_layout(title='Segment-wise Distribution of Total Purchases and Campaign Distribution')
 
-    else:
-        st.warning("Please submit the form on the Home page.")
+        # Display the updated scatter plot
+        st.plotly_chart(fig2, use_container_width=True)
 
 # Call the charts_page function
 charts_page()
