@@ -1,5 +1,5 @@
 import streamlit as st
-from pages import a_form_page_1, b_results_page_2, c_charts_page_3
+from pages import a_form_page_1, b_results_page_2, c_charts_page_3, d_Make_own_chart
 
 st.set_page_config(
     page_title="Hello",
@@ -12,7 +12,7 @@ st.set_page_config(
 # st.sidebar.markdown("### Navigation")
 selected_demo = st.sidebar.radio(
     "Choose a demo",
-    ("Form Page", "Results Page", "Charts Page")
+    ("Form Page", "Results Page", "Charts Page", "Custom chart Page")  # Corrected typo here
 )
 
 # Check if a demo has been selected via form submission
@@ -24,5 +24,7 @@ if selected_demo == "Form Page":
     a_form_page_1.form_page()
 elif selected_demo == "Results Page":
     b_results_page_2.results_page()
+elif selected_demo == "Custom chart Page":
+    d_Make_own_chart.main()
 else:
     c_charts_page_3.charts_page()

@@ -235,7 +235,7 @@ def charts_page():
 
         with fig_col1:
             st.markdown("#### Percentage Wise Age Distribution")
-            age_group = px.pie(labels = agegroup_counts.index, values = agegroup_counts.values, names = agegroup_counts.index)
+            age_group = px.pie(labels = agegroup_counts.index, values = agegroup_counts.values, names = agegroup_counts.index,height=500,width=500)
             age_group.update_traces(textposition = 'inside', 
                   textinfo = 'percent + label', 
                   hole = 0.4, 
@@ -267,7 +267,7 @@ def charts_page():
             sunburst_fig.update_traces(marker_line=dict(color='white', width=1))
             
             sunburst_fig.update_layout(uniformtext_minsize=12, uniformtext_mode='hide',
-                                    paper_bgcolor='rgba(0,0,0,0)', plot_bgcolor='rgba(0,0,0,0)', sunburstcolorway=['white'])
+                                    paper_bgcolor='rgba(0,0,0,0)', plot_bgcolor='rgba(0,0,0,0)', sunburstcolorway=['white'],width=500, height=500)
             
             # Display the customized sunburst chart
             st.plotly_chart(sunburst_fig)
