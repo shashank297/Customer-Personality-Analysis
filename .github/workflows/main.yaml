@@ -85,7 +85,7 @@ jobs:
         run: |
           docker pull ${{secrets.AWS_ECR_LOGIN_URI}}/${{ secrets.ECR_REPOSITORY_NAME }}:latest
 
-      - name: Stop and remove container if running
+      - name: Stop and remove the previous container (if exists)
         run: |
           if docker ps -q --filter "name=cpa" | grep -q . ; then
             docker stop cpa
