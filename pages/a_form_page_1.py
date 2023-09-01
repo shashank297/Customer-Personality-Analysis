@@ -9,7 +9,7 @@ import streamlit as st  # 🎈 data web app development
 
 
 def form_page():
-    st.title("Formm Page")
+    st.title("Form Page")
 
     with st.form('cluster prediction'):
         income = st.number_input('Income')
