@@ -9,6 +9,6 @@ DateTime
 sqlalchemy
 streamlit
 pygwalker
-psycopg2
+psycopg2-binary
 streamlit-aggrid
 -e .
