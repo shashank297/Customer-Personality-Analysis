@@ -1,20 +1,13 @@
-# Use a base image with Python 3.8
 FROM python:3.8-slim-buster
-
-# Set the working directory
 WORKDIR /home
-
-# Copy the application files into the container
 COPY . /home
 
-# Update and install necessary packages
-RUN apt-get update -y && apt-get install -y awscli
+RUN apt update -y && apt install awscli -y
 
-# Install Python dependencies
-RUN pip install -r requirements.txt
+RUN apt-get update && pip install -r requirements.txt
 
 # Expose the port that Streamlit will run on (default is 8501)
 EXPOSE 8501
 
-# Define the command to run the Streamlit app
+# Define the command to run when the container starts
 CMD ["streamlit", "run", "home.py"]
