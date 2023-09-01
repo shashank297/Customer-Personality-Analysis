@@ -1,5 +1,5 @@
 
-<img src="https://github.com/shashank297/Customer-Personality-Analysis/assets/67503481/46ccfeb9-28b2-4740-9d2f-36a85b714031" width="1700" height="400" alt="Customer Personality Analysis">
+<img src="https://github.com/shashank297/Customer-Personality-Analysis/assets/67503481/46ccfeb9-28b2-4740-9d2f-36a85b714031" width="1600" height="300" alt="Customer Personality Analysis">
 
 
 
