@@ -81,16 +81,16 @@ jobs:
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v1
 
-      - name: Pull latest images
-        run: |
-          docker pull ${{secrets.AWS_ECR_LOGIN_URI}}/${{ secrets.ECR_REPOSITORY_NAME }}:latest
-
       - name: Stop and remove the previous container (if exists)
         run: |
-          if docker ps -q --filter "name=cpa" | grep -q . ; then
+          if docker ps -a --filter "name=cpa" | grep -q . ; then
             docker stop cpa
             docker rm -fv cpa
           fi
+
+      - name: Pull latest images
+        run: |
+          docker pull ${{secrets.AWS_ECR_LOGIN_URI}}/${{ secrets.ECR_REPOSITORY_NAME }}:latest
 
       - name: Run Docker Image to serve users
         run: |
