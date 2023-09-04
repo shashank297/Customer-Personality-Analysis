@@ -24,6 +24,11 @@ The main objective here is -
 1. **Customer Sentiment Analysis**: Understand customers' attitudes towards the product.
 2. **Behavior Analysis**: Analyze what customers are doing rather than what they are saying about the product.
 
+
+## Flow Chart
+
+<div style="width: 640px; height: 480px; margin: 10px; position: relative;"><iframe allowfullscreen frameborder="0" style="width:640px; height:480px" src="https://lucid.app/documents/embedded/df79f306-dc79-44e0-8d6a-9766221382b9" id="YDOrqCmxhQvK"></iframe></div>
+
 ## Directory Structure
 
 | Directory/File                  | Description                               |
