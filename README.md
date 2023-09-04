@@ -29,9 +29,7 @@ The main objective here is -
 
 ![image](https://github.com/shashank297/Customer-Personality-Analysis/assets/67503481/4fc24359-1e5c-44f5-9a45-7216359867a8)
 
-
-
-## Directory Structure
+## <img src="https://github.com/shashank297/Customer-Personality-Analysis/assets/67503481/befd6434-b0dc-4843-8f48-05335476b8e7" width="32" height="32" alt="Customer Personality Analysis"> Directory Structure
 
 | Directory/File                  | Description                               |
 |---------------------------------|-------------------------------------------|
