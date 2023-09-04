@@ -25,7 +25,7 @@ The main objective here is -
 2. **Behavior Analysis**: Analyze what customers are doing rather than what they are saying about the product.
 
 
-## Flow Chart
+## <img src="https://github.com/shashank297/Customer-Personality-Analysis/assets/67503481/a925db2c-4b89-4376-aa6d-e91d2c2fd4b9" width="32" height="32" alt="Customer Personality Analysis"> Flow Chart
 
 ![image](https://github.com/shashank297/Customer-Personality-Analysis/assets/67503481/4fc24359-1e5c-44f5-9a45-7216359867a8)
 
