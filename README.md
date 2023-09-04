@@ -27,6 +27,7 @@ The main objective here is -
 
 ## Flow Chart
 
+![image](https://github.com/shashank297/Customer-Personality-Analysis/assets/67503481/d0f35452-0de3-4df1-b9f7-fe763f181ca3)
 
 
 ## Directory Structure
