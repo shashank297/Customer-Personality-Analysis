@@ -19,8 +19,7 @@ The main objective here is -
 2. What people do: which reveals what people are doing rather than what they are  saying about your product.
 
 
-## ![target](https://github.com/shashank297/Customer-Personality-Analysis/assets/67503481/0d440085-c282-408b-85cd-7f499628c170)
- Project Objectives
+## ![target](https://github.com/shashank297/Customer-Personality-Analysis/assets/67503481/0d440085-c282-408b-85cd-7f499628c170) Project Objectives
 
 1. **Customer Sentiment Analysis**: Understand customers' attitudes towards the product.
 2. **Behavior Analysis**: Analyze what customers are doing rather than what they are saying about the product.
