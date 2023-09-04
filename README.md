@@ -9,7 +9,7 @@ Customer Personality Analysis is a detailed analysis of a company’s ideal cust
 
 
 
-## ![magnifying-glass](https://github.com/shashank297/Customer-Personality-Analysis/assets/67503481/64d46879-adb9-4fe4-bd55-09917409c2c3) Problem Statement
+## <img src="https://github.com/shashank297/Customer-Personality-Analysis/assets/67503481/64d46879-adb9-4fe4-bd55-09917409c2c3" width="32" height="32" alt="Customer Personality Analysis"> Problem Statement
 
 
 Customer Personality Analysis is a detailed analysis of a company’s ideal customers. It helps a business to better understand its customers and makes it easier for them to modify products according to the specific needs, behaviors and concerns of different types of customers. 
