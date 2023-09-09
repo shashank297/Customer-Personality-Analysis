@@ -1,4 +1,17 @@
-## Problem Statement: 
+
+<img src="https://github.com/shashank297/Customer-Personality-Analysis/assets/67503481/46ccfeb9-28b2-4740-9d2f-36a85b714031" width="1600" height="300" alt="Customer Personality Analysis">
+
+
+
+# <img src="https://github.com/shashank297/Customer-Personality-Analysis/assets/67503481/5b970ab3-07aa-4e99-ae36-61b09be7001e" width="32" height="32" alt="Customer Personality Analysis"> Customer Personality Analysis
+
+Customer Personality Analysis is a detailed analysis of a company’s ideal customers. It helps a business to better understand its customers and makes it easier for them to modify products according to the specific needs, behaviors, and concerns of different types of customers.
+
+
+
+## <img src="https://github.com/shashank297/Customer-Personality-Analysis/assets/67503481/64d46879-adb9-4fe4-bd55-09917409c2c3" width="32" height="32" alt="Customer Personality Analysis"> Problem Statement
+
+
 Customer Personality Analysis is a detailed analysis of a company’s ideal customers. It helps a business to better understand its customers and makes it easier for them to modify products according to the specific needs, behaviors and concerns of different types of customers. 
 Customer personality analysis helps a business to modify its product based on its target customers from different types of customer segments. For example, instead of spending money to market a new product to every customer in the company’s database, a company can analyze which customer segment is most likely to buy the product and then market the product only on that particular segment. 
 The main objective here is - 
@@ -6,9 +19,17 @@ The main objective here is -
 2. What people do: which reveals what people are doing rather than what they are  saying about your product.
 
 
+## ![target](https://github.com/shashank297/Customer-Personality-Analysis/assets/67503481/0d440085-c282-408b-85cd-7f499628c170) Project Objectives
+
+1. **Customer Sentiment Analysis**: Understand customers' attitudes towards the product.
+2. **Behavior Analysis**: Analyze what customers are doing rather than what they are saying about the product.
 
 
+## <img src="https://github.com/shashank297/Customer-Personality-Analysis/assets/67503481/a925db2c-4b89-4376-aa6d-e91d2c2fd4b9" width="32" height="32" alt="Customer Personality Analysis"> Flow Chart
 
+![image](https://github.com/shashank297/Customer-Personality-Analysis/assets/67503481/4fc24359-1e5c-44f5-9a45-7216359867a8)
+
+## <img src="https://github.com/shashank297/Customer-Personality-Analysis/assets/67503481/befd6434-b0dc-4843-8f48-05335476b8e7" width="32" height="32" alt="Customer Personality Analysis"> Directory Structure
 
 | Directory/File                  | Description                               |
 |---------------------------------|-------------------------------------------|
