@@ -98,14 +98,20 @@ EC2
 - Platinum customers showed more acceptance towards promotion campaigns while bronze customers had the least interest.
 
 ## <img src="https://github.com/shashank297/Customer-Personality-Analysis/assets/67503481/7a1a27d2-ae60-457a-b1eb-11be3b77d6e4"  width="32" height="32"> Answering Question
-What are the statistical characteristics of the customers?
+
+**What are the statistical characteristics of the customers?**
+
 The company's customers are mostly married. There are more Middle Aged Adults, aged between 40 and 60, and most of them like to have one child. Most of the customers hold bachelor degrees and their earnings are mostly between 25,000 and 85,000.
 
-What are the spending habits of the customers?
+**What are the spending habits of the customers?**
+
 Customers have spent more on wine and meat products. Those without children have spent more than those having children. Singles are spending more than the ones with the partners. Middle-aged adults have spent more than the other age groups. Store shopping is the preferred channel for purchasing among customers. Web and Catalog purchasing also have potential.
 
-Are there some products that need more marketing?
+
+**Are there some products that need more marketing?**
+
 Sweets and Fruits need some effective marketing. The company needs to run promotions for these products in order to increase the revenue from these products. Baskets of the least-selling products combined with the most-selling products can be effective.
 
-How marketing can be made effective?
+**How marketing can be made effective?**
+
 As a marketing recommendation give coupons to the old and high-spending customers. Market cheap and on-offer products to low-income and low-spending customers. Web purchasing has some potential. To unlock this give special discounts to the customers who sign up on the company's website.
