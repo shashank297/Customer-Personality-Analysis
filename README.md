@@ -24,36 +24,6 @@ The main objective here is -
 1. **Customer Sentiment Analysis**: Understand customers' attitudes towards the product.
 2. **Behavior Analysis**: Analyze what customers are doing rather than what they are saying about the product.
 
-
-## <img src="https://github.com/shashank297/Customer-Personality-Analysis/assets/67503481/a925db2c-4b89-4376-aa6d-e91d2c2fd4b9" width="32" height="32" alt="Customer Personality Analysis"> Flow Chart
-
-![image](https://github.com/shashank297/Customer-Personality-Analysis/assets/67503481/4fc24359-1e5c-44f5-9a45-7216359867a8)
-
-### Feature Engineering 
-![image](https://github.com/shashank297/Customer-Personality-Analysis/assets/67503481/fd755ab7-b840-476d-abd6-92b2dcd0ae04)
-
-### Data Cleaning
-![image](https://github.com/shashank297/Customer-Personality-Analysis/assets/67503481/8a9b3dda-264f-48db-9e83-e03137ca80fb)
-
-### Data Transformation flow
-![image](https://github.com/shashank297/Customer-Personality-Analysis/assets/67503481/910e32cc-7e91-4950-b3a2-37ea4ebec0ea)
-
-### Traning Pipeline Flow
-![image](https://github.com/shashank297/Customer-Personality-Analysis/assets/67503481/a9f1f869-bb08-42f8-94f7-85ca29ee5be3)
-
-### Prediction Pipeline Flow
-![image](https://github.com/shashank297/Customer-Personality-Analysis/assets/67503481/3c06499d-88eb-4839-bdca-b43e06694fe1)
-
-### CI/ CD Flow
-![image](https://github.com/shashank297/Customer-Personality-Analysis/assets/67503481/991630c9-79ca-41ca-ba06-b0a285373190)
-
-
-
-
-
-
-
-
 ## <img src="https://github.com/shashank297/Customer-Personality-Analysis/assets/67503481/befd6434-b0dc-4843-8f48-05335476b8e7" width="32" height="32" alt="Customer Personality Analysis"> Directory Structure
 
 | Directory/File                  | Description                               |
@@ -83,6 +53,29 @@ The main objective here is -
 | `requirements.txt`              | List of Python dependencies for the project. |
 | `setup.py`                      | Setup script for packaging the project.  |
 
+
+
+## <img src="https://github.com/shashank297/Customer-Personality-Analysis/assets/67503481/a925db2c-4b89-4376-aa6d-e91d2c2fd4b9" width="32" height="32" alt="Customer Personality Analysis"> Flow Chart
+
+![image](https://github.com/shashank297/Customer-Personality-Analysis/assets/67503481/4fc24359-1e5c-44f5-9a45-7216359867a8)
+
+### Feature Engineering 
+![image](https://github.com/shashank297/Customer-Personality-Analysis/assets/67503481/fd755ab7-b840-476d-abd6-92b2dcd0ae04)
+
+### Data Cleaning
+![image](https://github.com/shashank297/Customer-Personality-Analysis/assets/67503481/8a9b3dda-264f-48db-9e83-e03137ca80fb)
+
+### Data Transformation flow
+![image](https://github.com/shashank297/Customer-Personality-Analysis/assets/67503481/910e32cc-7e91-4950-b3a2-37ea4ebec0ea)
+
+### Traning Pipeline Flow
+![image](https://github.com/shashank297/Customer-Personality-Analysis/assets/67503481/a9f1f869-bb08-42f8-94f7-85ca29ee5be3)
+
+### Prediction Pipeline Flow
+![image](https://github.com/shashank297/Customer-Personality-Analysis/assets/67503481/3c06499d-88eb-4839-bdca-b43e06694fe1)
+
+### CI/ CD Flow
+![image](https://github.com/shashank297/Customer-Personality-Analysis/assets/67503481/991630c9-79ca-41ca-ba06-b0a285373190)
 
 
 
