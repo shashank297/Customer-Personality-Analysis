@@ -61,7 +61,7 @@ The main objective here is -
 
 
 
-## What We Got From This Project
+## <img src="https://github.com/shashank297/Customer-Personality-Analysis/assets/67503481/4944f33a-6b3e-472b-a750-f1b61a07e0f0"  width="32" height="32"> What We Got From This Project
 - What are the statistical characteristics of the customers?
 - What are the spending habits of the customers?
 - Are there some products that need more marketing?
