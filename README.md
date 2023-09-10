@@ -67,7 +67,7 @@ The main objective here is -
 - Are there some products that need more marketing?
 - How the marketing can be made effective?
 
-## Step Inside The Project
+## <img src="https://github.com/shashank297/Customer-Personality-Analysis/assets/67503481/ed57b5bf-527a-4af3-b83b-34bc898abc8f"  width="32" height="32"> Step Inside The Project
 - Exploratory Data Analysis (EDA)
 - Data Ingestion
 - Data Transformation
@@ -81,7 +81,7 @@ EC2
   - Docker Build Integration
   - Amazon Elastic Container Registry (ECR)
 
- ## Conclusion
+ ## <img src="https://github.com/shashank297/Customer-Personality-Analysis/assets/67503481/cb8f2bbe-6b24-4e2e-8013-36c9b2f63719"  width="32" height="32"> Conclusion
 - Most of the customers are university graduates.
 - Most of the customers are living with partners.
 - Those living alone have spent more than those living with partners.
@@ -97,7 +97,7 @@ EC2
 - Most of the customers like to buy from stores and then online from the web.
 - Platinum customers showed more acceptance towards promotion campaigns while bronze customers had the least interest.
 
-## Answering Question
+## <img src="https://github.com/shashank297/Customer-Personality-Analysis/assets/67503481/7a1a27d2-ae60-457a-b1eb-11be3b77d6e4"  width="32" height="32"> Answering Question
 What are the statistical characteristics of the customers?
 The company's customers are mostly married. There are more Middle Aged Adults, aged between 40 and 60, and most of them like to have one child. Most of the customers hold bachelor degrees and their earnings are mostly between 25,000 and 85,000.
 
