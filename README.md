@@ -135,7 +135,7 @@ Sweets and Fruits need some effective marketing. The company needs to run promot
 
 As a marketing recommendation give coupons to the old and high-spending customers. Market cheap and on-offer products to low-income and low-spending customers. Web purchasing has some potential. To unlock this give special discounts to the customers who sign up on the company's website.
 
-## Streamlit APP
+## <img scr="https://github.com/shashank297/Customer-Personality-Analysis/assets/67503481/1fa159a3-14db-4332-8523-87839ae4c4e9"  width="32" height="32"> Streamlit App
 
 ![image](https://github.com/shashank297/Customer-Personality-Analysis/assets/67503481/7b4ea346-18f6-4dac-a711-917fba583b10)
 
