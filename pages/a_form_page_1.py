@@ -10,7 +10,7 @@ import streamlit as st  # 🎈 data web app development
 
 def form_page():
     st.markdown("# Customer Personality Analysis")
-    st.markdown("## Form Page")
+    st.markdown("## Form")
 
     with st.form('cluster prediction'):
         income = st.number_input('Income')
