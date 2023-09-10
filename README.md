@@ -79,6 +79,7 @@ The main objective here is -
 
 
 
+
 ## <img src="https://github.com/shashank297/Customer-Personality-Analysis/assets/67503481/4944f33a-6b3e-472b-a750-f1b61a07e0f0"  width="32" height="32"> What We Got From This Project
 - What are the statistical characteristics of the customers?
 - What are the spending habits of the customers?
@@ -133,3 +134,27 @@ Sweets and Fruits need some effective marketing. The company needs to run promot
 **How marketing can be made effective?**
 
 As a marketing recommendation give coupons to the old and high-spending customers. Market cheap and on-offer products to low-income and low-spending customers. Web purchasing has some potential. To unlock this give special discounts to the customers who sign up on the company's website.
+
+## Streamlit APP
+
+![image](https://github.com/shashank297/Customer-Personality-Analysis/assets/67503481/7b4ea346-18f6-4dac-a711-917fba583b10)
+
+![image](https://github.com/shashank297/Customer-Personality-Analysis/assets/67503481/84a02abf-eaf6-4676-a971-02a22abc0fb6)
+
+![image](https://github.com/shashank297/Customer-Personality-Analysis/assets/67503481/43e82c56-8886-4182-834c-91bbc8e7d3c7)
+
+![image](https://github.com/shashank297/Customer-Personality-Analysis/assets/67503481/b7e2e9b2-a4e9-4787-ae18-1b2cb2279906)
+
+![image](https://github.com/shashank297/Customer-Personality-Analysis/assets/67503481/c31a5fc4-fc4b-4e42-8c7b-1f24e8b5ad54)
+
+![image](https://github.com/shashank297/Customer-Personality-Analysis/assets/67503481/2e1b2d58-4d76-4802-a3f4-a1c1c21d2960)
+
+![image](https://github.com/shashank297/Customer-Personality-Analysis/assets/67503481/cc22011d-a779-43c7-a40a-31bd3567a8e2)
+
+
+
+
+
+
+
+
