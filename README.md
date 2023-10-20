@@ -27,7 +27,7 @@ The main objective here is -
 ## Tech Stack Used
 1. Python
 2. Moduler Programing
-3. Use Logging
+3. Used Logging
 5. PostgreSQL Database (GCP)
 6. GitHub Action (CI/CD)
 7. Streamlit (Website)
