@@ -95,6 +95,15 @@ The main objective here is -
             training_pipeline.py
             __init__.py
 ```
+
+## Watch Our Project in Action
+
+
+
+https://github.com/shashank297/Customer-Personality-Analysis/assets/67503481/55b8b2f0-89a1-4a66-ba5c-16595d29b815
+
+
+
             
 
 
