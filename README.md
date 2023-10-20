@@ -24,7 +24,7 @@ The main objective here is -
 1. **Customer Sentiment Analysis**: Understand customers' attitudes towards the product.
 2. **Behavior Analysis**: Analyze what customers are doing rather than what they are saying about the product.
 
-## Tech Stack Used
+## <img src="https://github.com/shashank297/Customer-Personality-Analysis/assets/67503481/cad56c93-d0a3-4f23-9ba0-22672b58086f" width="32" height="32" alt="Customer Personality Analysis"> Tech Stack Used
 1. Python
 2. Moduler Programing
 3. Used Logging
