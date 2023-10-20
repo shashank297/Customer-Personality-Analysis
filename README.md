@@ -26,32 +26,62 @@ The main objective here is -
 
 ## <img src="https://github.com/shashank297/Customer-Personality-Analysis/assets/67503481/befd6434-b0dc-4843-8f48-05335476b8e7" width="32" height="32" alt="Customer Personality Analysis"> Directory Structure
 
-| Directory/File                  | Description                               |
-|---------------------------------|-------------------------------------------|
-| `.github/workflows/main.yaml`   | GitHub Actions workflow configuration.    |
-| `artifacts/model.pkl`           | Saved machine learning model.            |
-| `artifacts/preprocessor.pkl`    | Saved data preprocessor.                 |
-| `docs/CPA_HLD.pdf`              | Documentation: High-Level Design PDF.    |
-| `docs/Low Level Design.docx`    | Documentation: Low-Level Design DOCX.    |
-| `logs/`                         | Directory for log files.                 |
-| `Notebook/Data/`                | Data storage for Jupyter Notebooks.      |
-| `Notebook/logs/Agglomerative Clustering.ipynb` | Jupyter Notebook for Agglomerative Clustering. |
-| `Notebook/logs/KMeans Clustering.ipynb` | Jupyter Notebook for KMeans Clustering. |
-| `pages/a_form_page_1.py`        | Python file for a form page.             |
-| `pages/b_results_page_2.py`     | Python file for a results page.          |
-| `pages/c_charts_page_3.py`      | Python file for a charts page.           |
-| `pages/d_Make_own_chart.py`     | Python file for making custom charts.    |
-| `src/components/data_ingestion.py` | Python file for data ingestion.         |
-| `src/components/data_process.py` | Python file for data processing.        |
-| `src/components/data_transformation.py` | Python file for data transformation. |
-| `src/components/model_trainer.py` | Python file for model training.         |
-| `src/components/variable.py`    | Python file for component variables.     |
-| `.gitignore`                    | Git ignore file for specifying ignored files and directories. |
-| `Dockerfile`                    | Configuration file for Docker.           |
-| `home.py`                       | Main Python script for the project.      |
-| `README.md`                     | Project's README file.                   |
-| `requirements.txt`              | List of Python dependencies for the project. |
-| `setup.py`                      | Setup script for packaging the project.  |
+```
+│   Dockerfile
+│   home.py
+│   README.md
+│   requirements.txt
+│   setup.py
+│
+├───.github
+│   └───workflows
+│           main.yaml
+│
+├───artifacts
+│       model.pkl
+│       preprocessor.pkl
+│
+├───docs
+│       Architecture_Final.pdf
+│       CPA_HLD.pdf
+│       Detail project report.pdf
+│       Low Level Design.pdf
+│       Wireframe Documentation_CPA.pdf
+│
+├───logs
+├───Notebook
+│   │   Agglomerative Clustering.ipynb
+│   │   KMeans Clustering.ipynb
+│   │
+│   └───Data
+│           marketing_campaign.csv
+│
+├───pages
+│       a_form_page_1.py
+│       b_results_page_2.py
+│       c_charts_page_3.py
+│       d_Make_own_chart.py
+│
+└───src
+    │   exception.py
+    │   logger.py
+    │   utils.py
+    │   __init__.py
+    │
+    ├───components
+    │       data_ingetion.py
+    │       data_process.py
+    │       data_transformation.py
+    │       model_trainer.py
+    │       variable.py
+    │       __init__.py
+    │
+    └───pipeline
+            prediction_pipeline.py
+            training_pipeline.py
+            __init__.py
+```
+            
 
 
 
