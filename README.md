@@ -24,6 +24,20 @@ The main objective here is -
 1. **Customer Sentiment Analysis**: Understand customers' attitudes towards the product.
 2. **Behavior Analysis**: Analyze what customers are doing rather than what they are saying about the product.
 
+## Tech Stack Used
+1. Python
+2. Moduler Programing
+3. Use Logging
+5. PostgreSQL Database (GCP)
+6. GitHub Action (CI/CD)
+7. Streamlit (Website)
+8. scikit-learn
+9. Docker
+10. Github
+11. AWS ECR (private image)
+12. AWS EC2 (VM)
+
+
 ## <img src="https://github.com/shashank297/Customer-Personality-Analysis/assets/67503481/befd6434-b0dc-4843-8f48-05335476b8e7" width="32" height="32" alt="Customer Personality Analysis"> Directory Structure
 
 ```
